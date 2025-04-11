@@ -51,7 +51,7 @@
 								<h1>便捷功能</h1>
 							</header>
 							<div class="content">
-								<p>这里有服务器相关的便捷插件使用说明<br><sub>update:2.28</sub></p>
+								<p>这里有服务器相关的模组使用说明<br><sub>update:2.28</sub></p>
 							</div>
 						</div>
 					</section>
@@ -63,16 +63,60 @@
 					<div class="inner">
 						<div class="row">
 							<div class="col-6 col-12-small">
-								<h2><font color="#b7efff">蓝图投影</font></h2>
-								<p><u>Structura</u>是一个可以从mcstructure文件生成类似全息投影的资源包的工具</p>
+								<h2><font color="#b7efff">创世神mod</font></h2>
+								<p><u>Structura</u>是一个可以让您快速建造的模组的工具</p>
 								
-								<h4>使用教程[win10]</h4>
+								<h4>使用教程</h4>
 								<ol>
-									<li>输入<code>/give @s structure_block</code>获得结构方块。</li>
-									<li>用结构方块框住需要的结构，确认没有问题后点击"导出"</li>
-									<li>下载Structura。<b>(<a href="Structura.1.4.0.beta.zip">点击下载</a>)</b></li>
-									<li>解压后运行Structura.exe。structure file导出刚刚导出的mcstructure文件，在pack name为资源包命名，点击make pack导出资源包。</li>
-									<li>双击mcpack导入资源包，在全局资源加载后在世界中放置一个盔甲架即可显示，转换姿势可以显示单层结构。</li>
+									<li>▲常用的命令：
+
+//undo    撤销        
+
+//redo     重做
+
+//pos1    将脚下方块设置为A点
+
+//pos2    将脚下方块设置为B点
+
+//copy     复制。 将选区内方块复制到剪贴板。
+
+   复制的机制对刚入门来说可能会有点抽象，所以这里我换个颜色提醒大家一定认真看——————"复制时的位置绑定是根据你输入命令时的相对位置决定的"
+
+   可能有点绕口。想象一下，假设你面前有个汽车模型，它车头朝向北方，车尾朝南。你用小斧头选区完毕打算复制它。此时你站在车头前面 离它有5格远时输入了//copy 进行复制
+
+   那么此时mod就记住了它的位置。下次你粘贴时，它的生成位置就是在你5格远而且车头依旧朝北，车尾朝南。
+
+   "在粘贴前没有进行其他命令操作时，你复制时什么样它粘贴生成时就会是什么样"
+
+//cut        剪切.   将选区内方块剪切到剪贴板。
+
+
+
+//set [方块]    填充      顾名思义，填充选区
+
+[方块]代指我的世界内方块的id，因为1.16.5以上有Tab补充功能，我更推荐打游戏内的英文id，如：石头stone 草方块grass_block等。
+
+不用像早期版本一样记数值id，但We也还是支持填写数值id的，比如正常情况下想清空一片区域用 //set air  和  //set 0  都可以达到效果。
+
+怎么用的顺手怎么来吧
+
+
+
+//paste [类型]     粘贴。 
+
+粘贴时方块出现的位置是和复制/剪切的位置一致。
+
+如复制时方块在西边4格位置，那么在粘贴时同样是西边4格位置出现
+
+[类型]: 代指是paste粘贴命令的条件以下是几个常用选项：
+
+//paste -a  不粘贴空气
+
+//paste -b 同时粘贴生物群系
+
+//paste -o  粘贴在原始位置
+
+（还是不理解的话可以点击或复制到浏览器 https://mineplugin.org/images/4/48/WorldEdit_paste.png 看看图片也许就明白了）</li>
 								</ol>
 								<h4>advanced高级功能</h4>
 								<ul>
@@ -203,7 +247,7 @@
 					<footer id="footer">
 						<div class="inner">
 							<ul class="copyright">
-								<li>由<strong>嘿华云</strong>强力驱动</li><li>All Rights Reserved</li><li><a href="https://b23.tv/C0YmxMi">bilibili:梦途先锋_DreamPioneer</a></li><li>Design: Redsugar</li><li>&copy; Imagine Server 2022</li><!--   莱幻工作室——IMS幻想浮城服务器管理组-->
+								<li>由<strong>嘿华云</strong>强力驱动</li><li>All Rights Reserved</li><li><a href="https://b23.tv/C0YmxMi">bilibili:梦途先锋_DreamPioneer</a></li><li>Design: Redsugar</li><li>&MX Server 2025</li>
 							</ul>
 						</div>
 					</footer>
