@@ -1,46 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>安卓设置跳转</title>
+    <title>打开安卓设置</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        function launchAndroidIntent(action) {
-            // 尝试直接跳转
-            window.location.href = "intent:#Intent;action=" + action + ";end";
+        function openSettings(action, fallbackUrl) {
+            // 尝试 intent: 方案
+            const intentUrl = `intent:#Intent;action=${action};end`;
+            window.location.href = intentUrl;
             
-            // 如果跳转失败，显示备用方案
-            setTimeout(function() {
-                alert("跳转失败，请尝试以下方法：\n1. 使用Chrome浏览器打开\n2. 手动复制此链接到ADB命令执行：\nadb shell am start -a " + action);
-            }, 500);
+            // 3秒后检测是否跳转成功，否则尝试备用方案
+            setTimeout(() => {
+                if (!document.hidden) {
+                    // 尝试 android-app: 协议（部分厂商支持）
+                    if (fallbackUrl) {
+                        window.location.href = fallbackUrl;
+                    }
+                    // 最终提示用户手动操作
+                    alert("跳转失败，请手动进入设置 > 关于平板电脑");
+                }
+            }, 3000);
         }
     </script>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-        button {
-            display: block;
-            margin: 10px 0;
-            padding: 10px 15px;
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 20px;
             background: #4285f4;
             color: white;
-            border: none;
-            border-radius: 4px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
         }
-        button:hover { background: #3367d6; }
-        .tablet { background: #673ab7; }
-        .tablet:hover { background: #5e35b1; }
+        .btn:hover {
+            background: #3367d6;
+        }
+        .btn-tablet {
+            background: #673ab7;
+        }
+        .btn-tablet:hover {
+            background: #5e35b1;
+        }
     </style>
 </head>
 <body>
     <h2>安卓设置快捷入口</h2>
     
-    <button onclick="launchAndroidIntent('android.settings.SETTINGS')">系统设置</button>
-    <button onclick="launchAndroidIntent('android.settings.WIFI_SETTINGS')">Wi-Fi设置</button>
-    <button onclick="launchAndroidIntent('android.settings.APPLICATION_SETTINGS')">应用管理</button>
-    <button onclick="launchAndroidIntent('android.settings.NOTIFICATION_SETTINGS')">通知设置</button>
-    <button onclick="launchAndroidIntent('android.settings.DEVICE_INFO_SETTINGS')" class="tablet">关于平板电脑</button>
-
+    <!-- 关于平板电脑 -->
+    <a class="btn btn-tablet" onclick="openSettings(
+        'android.settings.DEVICE_INFO_SETTINGS',
+        'android-app://com.android.settings/com.android.settings.Settings$DeviceInfoSettingsActivity'
+    )">打开「关于平板电脑」</a>
+    
     <p style="color: #666; margin-top: 20px;">
-        提示：如果点击无反应，请尝试使用Chrome浏览器打开，或手动执行ADB命令。
+        如果无法自动跳转，请手动进入 <b>设置 → 系统 → 关于平板电脑</b>。
     </p>
 </body>
 </html>
