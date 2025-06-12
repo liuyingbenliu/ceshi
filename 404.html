@@ -1,68 +1,275 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>打开安卓设置</title>
+    <title>跳转到「关于平板电脑」</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        function openSettings(action, fallbackUrl) {
-            // 尝试 intent: 方案
-            const intentUrl = `intent:#Intent;action=${action};end`;
-            window.location.href = intentUrl;
-            
-            // 3秒后检测是否跳转成功，否则尝试备用方案
-            setTimeout(() => {
-                if (!document.hidden) {
-                    // 尝试 android-app: 协议（部分厂商支持）
-                    if (fallbackUrl) {
-                        window.location.href = fallbackUrl;
-                    }
-                    // 最终提示用户手动操作
-                    alert("跳转失败，请手动进入设置 > 关于平板电脑");
-                }
-            }, 3000);
-        }
-    </script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
+            font-family: 'Helvetica', Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
             padding: 20px;
             text-align: center;
         }
-        .btn {
-            display: inline-block;
-            margin: 10px;
-            padding: 12px 20px;
-            background: #4285f4;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
+        .miui-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .miui-popup-content {
+            background: white;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .miui-popup-title {
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+        }
+        .miui-popup-buttons {
+            display: flex;
+        }
+        .miui-popup-btn {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            color: #333;
+            font-weight: bold;
             cursor: pointer;
         }
-        .btn:hover {
-            background: #3367d6;
+        .miui-popup-btn-cancel {
+            border-right: 1px solid #eee;
+            color: #666;
         }
-        .btn-tablet {
-            background: #673ab7;
-        }
-        .btn-tablet:hover {
-            background: #5e35b1;
+        .miui-popup-btn-confirm {
+            color: #FF5722;
         }
     </style>
 </head>
 <body>
-    <h2>安卓设置快捷入口</h2>
-    
-    <!-- 关于平板电脑 -->
-    <a class="btn btn-tablet" onclick="openSettings(
-        'android.settings.DEVICE_INFO_SETTINGS',
-        'android-app://com.android.settings/com.android.settings.Settings$DeviceInfoSettingsActivity'
-    )">打开「关于平板电脑」</a>
-    
-    <p style="color: #666; margin-top: 20px;">
-        如果无法自动跳转，请手动进入 <b>设置 → 系统 → 关于平板电脑</b>。
-    </p>
+
+<!-- 主按钮 -->
+<button id="openSettingsBtn" style="
+    margin-top: 50px;
+    padding: 15px 30px;
+    background: #FF5722;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+">查看平板电脑信息</button>
+
+<!-- 仿MIUI/EMUI的弹窗 -->
+<div id="miuiPopup" class="miui-popup">
+    <div class="miui-popup-content">
+        <div class="miui-popup-title">打开系统设置</div>
+        <div class="miui-popup-buttons">
+            <div class="miui-popup-btn miui-popup-btn-cancel" onclick="hidePopup()">取消</div>
+            <div class="miui-popup-btn miui-popup-btn-confirm" onclick="openSettingsApp()">打开</div>
+        </div>
+    </div>
+</div>
+
+<!-- 手动指引（默认隐藏） -->
+<div id="manualGuide" style="display: none; margin-top: 30px; padding: 15px; background: #fff; border-radius: 10px;">
+    <h3>无法自动跳转？</h3>
+    <p>请手动操作：</p>
+    <ol style="text-align: left;">
+        <li>打开系统<strong>「设置」</strong></li>
+        <li>进入<strong>「关于平板电脑」</strong></li>
+        <li>查看设备信息</li>
+    </ol>
+</div>
+
+<script>
+    // 主跳转逻辑
+    document.getElementById('openSettingsBtn').onclick = function() {
+        // 先尝试直接跳转
+        try {
+            window.location.href = 'intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end';
+            
+            // 如果3秒后还在当前页面，显示弹窗
+            setTimeout(function() {
+                if (!document.hidden) {
+                    showPopup();
+                }
+            }, 3000);
+        } catch (e) {
+            showPopup();
+        }
+    };
+
+    // 显示仿厂商弹窗
+    function showPopup() {
+        document.getElementById('miuiPopup').style.display = 'flex';
+    }
+
+    // 隐藏弹窗
+    function hidePopup() {
+        document.getElementById('miuiPopup').style.display = 'none';
+        document.getElementById('manualGuide').style.display = 'block';
+    }
+
+    // 弹窗中的"打开"按钮
+    function openSettingsApp() {
+        // 再次尝试跳转
+        window.location.href = 'android-app://com.android.settings/com.android.settings.Settings$DeviceInfoSettingsActivity';
+        
+        // 最终回退
+<!DOCTYPE html>
+<html>
+<head>
+    <title>跳转到「关于平板电脑」</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .miui-popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .miui-popup-content {
+            background: white;
+            width: 80%;
+            max-width: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .miui-popup-title {
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #eee;
+        }
+        .miui-popup-buttons {
+            display: flex;
+        }
+        .miui-popup-btn {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .miui-popup-btn-cancel {
+            border-right: 1px solid #eee;
+            color: #666;
+        }
+        .miui-popup-btn-confirm {
+            color: #FF5722;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 主按钮 -->
+<button id="openSettingsBtn" style="
+    margin-top: 50px;
+    padding: 15px 30px;
+    background: #FF5722;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+">查看平板电脑信息</button>
+
+<!-- 仿MIUI/EMUI的弹窗 -->
+<div id="miuiPopup" class="miui-popup">
+    <div class="miui-popup-content">
+        <div class="miui-popup-title">打开系统设置</div>
+        <div class="miui-popup-buttons">
+            <div class="miui-popup-btn miui-popup-btn-cancel" onclick="hidePopup()">取消</div>
+            <div class="miui-popup-btn miui-popup-btn-confirm" onclick="openSettingsApp()">打开</div>
+        </div>
+    </div>
+</div>
+
+<!-- 手动指引（默认隐藏） -->
+<div id="manualGuide" style="display: none; margin-top: 30px; padding: 15px; background: #fff; border-radius: 10px;">
+    <h3>无法自动跳转？</h3>
+    <p>请手动操作：</p>
+    <ol style="text-align: left;">
+        <li>打开系统<strong>「设置」</strong></li>
+        <li>进入<strong>「关于平板电脑」</strong></li>
+        <li>查看设备信息</li>
+    </ol>
+</div>
+
+<script>
+    // 主跳转逻辑
+    document.getElementById('openSettingsBtn').onclick = function() {
+        // 先尝试直接跳转
+        try {
+            window.location.href = 'intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end';
+            
+            // 如果3秒后还在当前页面，显示弹窗
+            setTimeout(function() {
+                if (!document.hidden) {
+                    showPopup();
+                }
+            }, 3000);
+        } catch (e) {
+            showPopup();
+        }
+    };
+
+    // 显示仿厂商弹窗
+    function showPopup() {
+        document.getElementById('miuiPopup').style.display = 'flex';
+    }
+
+    // 隐藏弹窗
+    function hidePopup() {
+        document.getElementById('miuiPopup').style.display = 'none';
+        document.getElementById('manualGuide').style.display = 'block';
+    }
+
+    // 弹窗中的"打开"按钮
+    function openSettingsApp() {
+        // 再次尝试跳转
+        window.location.href = 'android-app://com.android.settings/com.android.settings.Settings$DeviceInfoSettingsActivity';
+        
+        // 最终回退
+        setTimeout(function() {
+            hidePopup();
+        }, 1000);
+    }
+</script>
 </body>
 </html>
