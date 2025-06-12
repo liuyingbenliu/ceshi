@@ -1,40 +1,160 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>跳转到「关于平板电脑」</title>
+    <title>跳转到平板设置</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            font-family: 'Helvetica', Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             background: #f5f5f5;
             margin: 0;
             padding: 20px;
             text-align: center;
         }
-        .miui-popup {
+        .pixel-dialog {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0,0,0,0.5);
             z-index: 1000;
             align-items: center;
             justify-content: center;
         }
-        .miui-popup-content {
-            background: white;
+        .dialog-content {
             width: 80%;
-            max-width: 300px;
-            border-radius: 12px;
+            max-width: 280px;
+            background: white;
+            border-radius: 16px;
             overflow: hidden;
-            animation: fadeIn 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        .dialog-buttons {
+            display: flex;
+            border-top: 1px solid #eee;
         }
+        .dialog-btn {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            color: #1a73e8;
+            font-weight: 500;
+        }
+        .dialog-btn-cancel {
+            color: #5f6368;
+            border-right: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+<button id="launchBtn" style="
+    margin-top: 40px;
+    padding: 12px 24px;
+    background: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+">打开关于平板</button>
+
+<!-- Material You风格弹窗 -->
+<div id="nativeDialog" class="pixel-dialog">
+    <div class="dialog-content">
+        <div style="padding: 20px;">
+            <div style="font-size: 18px; margin-bottom: 8px;">需要打开设置</div>
+            <div style="color: #5f6368; font-size: 14px;">将在系统设置中查看设备信息</div>
+        </div>
+        <div class="dialog-buttons">
+            <div class="dialog-btn dialog-btn-cancel" onclick="hideDialog()">取消</div>
+            <div class="dialog-btn" onclick="launchWithFallback()">打开</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 类原生系统专用跳转方案
+    const launchSettings = () => {
+        // 第一方案：尝试Android12+专用deep link
+        window.location.href = 'intent://settings/device_info#Intent;scheme=android-app;package=com.android.settings;end';
+        
+        // 第二方案：3秒后检测是否跳转成功
+        setTimeout(() => {
+            if (!document.hidden) {
+                document.getElementById('nativeDialog').style.display = 'flex';
+            }
+        }, 800);
+    };
+
+    // 弹窗中的打开按钮
+    const launchWithFallback = () => {
+        // 尝试原生Android12的Settings.EXTRA_SETTINGS_EMBED_DEEP_LINK
+        window.location.href = 'intent:#Intent;action=android.settings.SETTINGS;S.android.provider.extra.SETTINGS_EMBEDDED_DEEP_LINK=android.settings.DEVICE_INFO_SETTINGS;end';
+        
+        // 最终回退方案
+        setTimeout(() => {
+            if (!document.hidden) {
+                alert("请手动进入：设置 → 系统 → 关于手机");
+            }
+        }, 1000);
+    };
+
+    const hideDialog = () => {
+        document.getElementById('nativeDialog').style.display = 'none';
+    };
+
+    document.getElementById('launchBtn').addEventListener('click', launchSettings);
+</script>
+</body>
+</html>        <div style="padding: 20px;">
+            <div style="font-size: 18px; margin-bottom: 8px;">需要打开设置</div>
+            <div style="color: #5f6368; font-size: 14px;">将在系统设置中查看设备信息</div>
+        </div>
+        <div class="dialog-buttons">
+            <div class="dialog-btn dialog-btn-cancel" onclick="hideDialog()">取消</div>
+            <div class="dialog-btn" onclick="launchWithFallback()">打开</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 类原生系统专用跳转方案
+    const launchSettings = () => {
+        // 第一方案：尝试Android12+专用deep link
+        window.location.href = 'intent://settings/device_info#Intent;scheme=android-app;package=com.android.settings;end';
+        
+        // 第二方案：3秒后检测是否跳转成功
+        setTimeout(() => {
+            if (!document.hidden) {
+                document.getElementById('nativeDialog').style.display = 'flex';
+            }
+        }, 800);
+    };
+
+    // 弹窗中的打开按钮
+    const launchWithFallback = () => {
+        // 尝试原生Android12的Settings.EXTRA_SETTINGS_EMBED_DEEP_LINK
+        window.location.href = 'intent:#Intent;action=android.settings.SETTINGS;S.android.provider.extra.SETTINGS_EMBEDDED_DEEP_LINK=android.settings.DEVICE_INFO_SETTINGS;end';
+        
+        // 最终回退方案
+        setTimeout(() => {
+            if (!document.hidden) {
+                alert("请手动进入：设置 → 系统 → 关于手机");
+            }
+        }, 1000);
+    };
+
+    const hideDialog = () => {
+        document.getElementById('nativeDialog').style.display = 'none';
+    };
+
+    document.getElementById('launchBtn').addEventListener('click', launchSettings);
+</script>
+</body>
+</html>        }
         .miui-popup-title {
             padding: 20px;
             font-size: 18px;
