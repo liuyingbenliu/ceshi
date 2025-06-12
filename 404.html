@@ -1,110 +1,46 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>404</title>
-		<embed src="mp3/cuowu.wav" hidden="true" autostart="true" loop="flase">
-		<style>
-	
-			body{
-				background-color: rgb(10,126,209);
-			overflow-x:hidden;
-			overflow-y:hidden;
-			display: block;
-			}
-			
-			
-			.ziti{
-    font-family: "microsoft yahei";
-    color: white;
-    font-size: 125px;
-    position: relative;
-    left: 105px;
-    top: -76px;
-			}
-			.congqi{
-    font-size: 26px;
-    color: white;
-    font-family: "microsoft yahei";
-    position: relative;
-    left: 177px;
-    bottom: 100px;
-    top: -198px;
-			}
-			#over{
-    font-size: 26px;
-    color: white;
-    font-family: "microsoft yahei";
-    position: relative;
-    left: 178px;
-    bottom: 195px;
-    top: -203px;
-			}
-			.uio{
-    position: relative;
-    bottom: 200px;
-    left: 307px;
-    color: white;
-    font-size: 17px;
-    top: -161px;
-			}
-			.ides{
-    position: relative;
-    bottom: 200px;
-    left: 175px;
-    top: -51px;
-			}
-			
-		</style>
-	</head>
-	<body id="demo">
-		
-		
-			<div class="a2333">
-			<!-- 	<p class="ziti">(゜-゜)つロ 干杯</p> -->
-				<p class="ziti">:(</p>
-				<p class="congqi">这个界面被鸽了，需要返回主界面<br/>
-			  我们只收集一些没用的错误信息，然后为你跳转到主界面。
-				<p id="over"></p></p>
-				<div >
-					<p class="uio">有关此界面为啥没有作完的详细信息，请联系鸽子程序猿来获取，反正也不会告诉你</p>
-					<p class="uio">进度达到100%时将自动为你跳转至主页</p>
-				  <div class="ides">
-						
-						<img src="images/404.png" style="width: 100px; height: 100px; position: relative; left: 6.5px; top: -186.5px; right: 2.5px; bottom: 2.5px;"/>
-					</div>
-					
-				</div>
-				
-				
-		</div>
-		
-		<script>
-			var y=0;
-			var s=0;
-			var z=setInterval("play()",30)
-			var s=setInterval("xxs()",10)
-			var s=setInterval("fen()",10)
-			function xxs(){
-				s++
-				if(s>99)(
-				s=0
-				)
-			}
-			function play(){
-				y++
-				if(y>50){
-					y=0
-						location.reload();
-						location.href="index.html";
-						}
-			
-			}
-			function fen(){
-					var p=	document.getElementById("over");
-				p.innerHTML="("+"完成"+y+"."+s+"%"+")";
-			}
-		</script>
-
-	</body>
+<head>
+    <title>打开安卓设置</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        a {
+            display: inline-block;
+            margin: 8px 0;
+            padding: 10px 15px;
+            background-color: #4285f4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        a:hover {
+            background-color: #3367d6;
+        }
+        .tablet-info {
+            background-color: #673ab7;
+        }
+        .tablet-info:hover {
+            background-color: #5e35b1;
+        }
+    </style>
+</head>
+<body>
+    <h2>点击以下链接跳转：</h2>
+    <a href="intent:#Intent;action=android.settings.SETTINGS;end">打开系统设置</a><br>
+    <a href="intent:#Intent;action=android.settings.WIFI_SETTINGS;end">打开 Wi-Fi 设置</a><br>
+    <a href="intent:#Intent;action=android.settings.APPLICATION_SETTINGS;end">打开应用管理</a><br>
+    <a href="intent:#Intent;action=android.settings.NOTIFICATION_SETTINGS;end">打开通知设置</a><br>
+    <a href="intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end" class="tablet-info">关于平板电脑</a>
+</body>
 </html>
