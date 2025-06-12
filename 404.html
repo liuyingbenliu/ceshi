@@ -3,620 +3,786 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>设备信息助手</title>
+    <title>安卓15设置</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <style>
+        :root {
+            --primary-color: #6750A4;
+            --surface-color: #FEF7FF;
+            --on-surface-color: #1D1B20;
+            --surface-variant: #E7E0EC;
+            --on-surface-variant: #49454F;
+            --header-height: 64px;
+            --footer-height: 56px;
+            --border-radius: 16px;
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+            font-family: 'Roboto', sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
-            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: var(--on-surface-color);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 600px;
-            width: 100%;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            height: 100vh;
             overflow: hidden;
-            margin-top: 40px;
         }
         
-        header {
-            background: #1a73e8;
-            color: white;
-            padding: 30px 20px;
-            text-align: center;
-        }
-        
-        header h1 {
-            font-size: 1.8rem;
-            font-weight: 500;
-            margin-bottom: 10px;
-        }
-        
-        header p {
-            opacity: 0.9;
-            font-size: 1rem;
-        }
-        
-        .content {
-            padding: 30px 20px;
-        }
-        
-        .card {
-            background: #f8f9fa;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-        
-        .card h2 {
-            color: #1a73e8;
-            font-size: 1.3rem;
-            margin-bottom: 15px;
+        /* 顶部应用栏 */
+        .app-bar {
+            background-color: var(--surface-color);
+            height: var(--header-height);
             display: flex;
             align-items: center;
+            padding: 0 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 100;
+            position: relative;
         }
         
-        .card h2 svg {
-            margin-right: 10px;
-        }
-        
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 18px;
-            background: #1a73e8;
-            color: white;
+        .app-bar .back-button {
+            background: none;
             border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 500;
+            color: var(--on-surface-color);
+            font-size: 24px;
+            margin-right: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            text-decoration: none;
-            margin-top: 15px;
-            box-shadow: 0 4px 6px rgba(26, 115, 232, 0.2);
+            display: none;
         }
         
-        .btn:hover {
-            background: #0d62da;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(26, 115, 232, 0.25);
+        .app-bar .title {
+            font-size: 22px;
+            font-weight: 500;
         }
         
-        .btn:active {
-            transform: translateY(0);
-        }
-        
-        .manual-steps {
-            padding: 0;
-            margin-top: 20px;
-        }
-        
-        .manual-steps li {
+        .app-bar .actions {
+            margin-left: auto;
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
         }
         
-        .step-number {
-            min-width: 28px;
-            height: 28px;
-            background: #1a73e8;
-            color: white;
-            border-radius: 50%;
+        .app-bar .action-button {
+            background: none;
+            border: none;
+            color: var(--on-surface-color);
+            font-size: 24px;
+            margin-left: 16px;
+            cursor: pointer;
+        }
+        
+        /* 内容区域 */
+        .content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        
+        /* 导航抽屉 */
+        .nav-drawer {
+            width: 280px;
+            background-color: var(--surface-color);
+            height: 100%;
+            overflow-y: auto;
+            padding: 16px 0;
+            border-right: 1px solid rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            cursor: pointer;
+            border-radius: 28px;
+            margin: 0 12px 4px;
+            transition: var(--transition);
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--surface-variant);
+        }
+        
+        .nav-item .icon {
+            font-size: 24px;
+            margin-right: 12px;
+            color: var(--on-surface-variant);
+        }
+        
+        .nav-item.active .icon {
+            color: var(--primary-color);
+        }
+        
+        .nav-item .label {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .nav-item.active .label {
+            color: var(--primary-color);
+        }
+        
+        .nav-divider {
+            height: 1px;
+            background-color: rgba(0,0,0,0.1);
+            margin: 16px 0;
+        }
+        
+        .nav-header {
+            padding: 16px 24px 8px;
+            font-size: 14px;
+            color: var(--on-surface-variant);
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background-color: #f5f5f5;
+        }
+        
+        .section {
+            background-color: var(--surface-color);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+        
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+        
+        .setting-item .icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--surface-variant);
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 15px;
-            font-weight: 500;
+            margin-right: 16px;
+            color: var(--primary-color);
         }
         
-        .step-content {
+        .setting-item .details {
             flex: 1;
         }
         
-        .step-content h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-            color: #202124;
+        .setting-item .title {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 4px;
         }
         
-        .step-content p {
-            color: #5f6368;
-            font-size: 0.95rem;
-            line-height: 1.5;
+        .setting-item .subtitle {
+            font-size: 14px;
+            color: var(--on-surface-variant);
         }
         
-        footer {
-            text-align: center;
-            padding: 20px;
-            color: #5f6368;
-            font-size: 0.9rem;
-            margin-top: auto;
+        .setting-item .action {
+            color: var(--on-surface-variant);
+        }
+        
+        /* 开关控件 */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(18px);
+        }
+        
+        /* 搜索栏 */
+        .search-container {
+            padding: 16px;
+            background-color: var(--surface-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: var(--surface-variant);
+            border-radius: 28px;
+            padding: 8px 16px;
+        }
+        
+        .search-bar .icon {
+            color: var(--on-surface-variant);
+            margin-right: 8px;
+        }
+        
+        .search-bar input {
+            border: none;
+            background: none;
+            outline: none;
+            flex: 1;
+            font-size: 16px;
+        }
+        
+        /* 底部导航 */
+        .bottom-nav {
+            display: flex;
+            background-color: var(--surface-color);
+            height: var(--footer-height);
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .nav-tab {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--on-surface-variant);
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .nav-tab.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-tab .icon {
+            font-size: 24px;
+            margin-bottom: 4px;
         }
         
         /* 响应式设计 */
-        @media (max-width: 480px) {
-            .container {
-                border-radius: 16px;
+        @media (max-width: 768px) {
+            .nav-drawer {
+                position: fixed;
+                left: -280px;
+                z-index: 1000;
             }
             
-            header {
-                padding: 25px 15px;
+            .nav-drawer.open {
+                left: 0;
             }
             
-            header h1 {
-                font-size: 1.5rem;
-            }
-            
-            .content {
-                padding: 20px 15px;
+            .app-bar .menu-button {
+                display: block;
             }
         }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>设备信息助手</h1>
-            <p>查看您的平板电脑详细信息</p>
-        </header>
         
-        <div class="content">
-            <div class="card">
-                <h2>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-                        <line x1="12" y1="18" x2="12" y2="18"></line>
-                    </svg>
-                    自动跳转到设备信息
-                </h2>
-                <p>点击下方按钮尝试自动打开系统设置中的设备信息页面</p>
-                
-                <a id="autoJumpBtn" class="btn">打开设备信息</a>
-            </div>
-            
-            <div class="card">
-                <h2>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
-                        <line x1="12" y1="9" x2="12" y2="13"></line>
-                        <line x1="12" y1="17" x2="12" y2="17"></line>
-                    </svg>
-                    手动操作指南
-                </h2>
-                <p>如果自动跳转失败，请按照以下步骤手动操作：</p>
-                
-                <ol class="manual-steps">
-                    <li>
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>打开系统设置</h3>
-                            <p>从主屏幕或应用抽屉中找到并打开"设置"应用</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>进入"系统"菜单</h3>
-                            <p>向下滚动并点击"系统"或"关于设备"选项</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>选择"关于平板电脑"</h3>
-                            <p>在系统菜单中找到并点击"关于平板电脑"或"设备信息"</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h3>查看设备详情</h3>
-                            <p>在此页面查看您的设备型号、Android版本等信息</p>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    
-    <footer>
-        <p>© 2023 设备信息助手 | 适用于 Android 5.0+</p>
-    </footer>
-
-    <script>
-        document.getElementById('autoJumpBtn').addEventListener('click', function() {
-            // 创建隐藏的iframe尝试多种跳转方式
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            document.body.appendChild(iframe);
-            
-            // 尝试多种跳转方案
-            const schemes = [
-                // 标准Intent方案
-                'intent://settings/device_info#Intent;scheme=android-app;package=com.android.settings;end',
-                
-                // Android 12+嵌入式深层链接
-                'intent:#Intent;action=android.settings.SETTINGS;S.android.provider.extra.SETTINGS_EMBEDDED_DEEP_LINK=android.settings.DEVICE_INFO_SETTINGS;end',
-                
-                // 通用设备信息设置
-                'intent:#Intent;action=com.android.settings.Settings$MyDeviceInfoActivity;end',
-                
-                // 旧版设置入口
-                'intent:#Intent;component=com.android.settings/.Settings$DeviceInfoSettingsActivity;end',
-                
-                // 直接打开设置应用
-                'intent://#Intent;package=com.android.settings;scheme=android-app;end'
-            ];
-            
-            let currentScheme = 0;
-            
-            function tryNextScheme() {
-                if (currentScheme < schemes.length) {
-                    iframe.src = schemes[currentScheme];
-                    currentScheme++;
-                    
-                    // 尝试下一个方案
-                    setTimeout(tryNextScheme, 300);
-                } else {
-                    // 所有方案都失败
-                    document.body.removeChild(iframe);
-                    
-                    // 显示手动操作指南
-                    alert('无法自动跳转，请查看下方的手动操作指南');
-                }
-            }
-            
-            // 开始尝试跳转
-            tryNextScheme();
-        });
-    </script>
-</body>
-</html><!-- Material You风格弹窗 -->
-<div id="nativeDialog" class="pixel-dialog">
-    <div class="dialog-content">
-        <div style="padding: 20px;">
-            <div style="font-size: 18px; margin-bottom: 8px;">需要打开设置</div>
-            <div style="color: #5f6368; font-size: 14px;">将在系统设置中查看设备信息</div>
-        </div>
-        <div class="dialog-buttons">
-            <div class="dialog-btn dialog-btn-cancel" onclick="hideDialog()">取消</div>
-            <div class="dialog-btn" onclick="launchWithFallback()">打开</div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // 类原生系统专用跳转方案
-    const launchSettings = () => {
-        // 第一方案：尝试Android12+专用deep link
-        window.location.href = 'intent://settings/device_info#Intent;scheme=android-app;package=com.android.settings;end';
-        
-        // 第二方案：3秒后检测是否跳转成功
-        setTimeout(() => {
-            if (!document.hidden) {
-                document.getElementById('nativeDialog').style.display = 'flex';
-            }
-        }, 800);
-    };
-
-    // 弹窗中的打开按钮
-    const launchWithFallback = () => {
-        // 尝试原生Android12的Settings.EXTRA_SETTINGS_EMBED_DEEP_LINK
-        window.location.href = 'intent:#Intent;action=android.settings.SETTINGS;S.android.provider.extra.SETTINGS_EMBEDDED_DEEP_LINK=android.settings.DEVICE_INFO_SETTINGS;end';
-        
-        // 最终回退方案
-        setTimeout(() => {
-            if (!document.hidden) {
-                alert("请手动进入：设置 → 系统 → 关于手机");
-            }
-        }, 1000);
-    };
-
-    const hideDialog = () => {
-        document.getElementById('nativeDialog').style.display = 'none';
-    };
-
-    document.getElementById('launchBtn').addEventListener('click', launchSettings);
-</script>
-</body>
-</html>        <div style="padding: 20px;">
-            <div style="font-size: 18px; margin-bottom: 8px;">需要打开设置</div>
-            <div style="color: #5f6368; font-size: 14px;">将在系统设置中查看设备信息</div>
-        </div>
-        <div class="dialog-buttons">
-            <div class="dialog-btn dialog-btn-cancel" onclick="hideDialog()">取消</div>
-            <div class="dialog-btn" onclick="launchWithFallback()">打开</div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // 类原生系统专用跳转方案
-    const launchSettings = () => {
-        // 第一方案：尝试Android12+专用deep link
-        window.location.href = 'intent://settings/device_info#Intent;scheme=android-app;package=com.android.settings;end';
-        
-        // 第二方案：3秒后检测是否跳转成功
-        setTimeout(() => {
-            if (!document.hidden) {
-                document.getElementById('nativeDialog').style.display = 'flex';
-            }
-        }, 800);
-    };
-
-    // 弹窗中的打开按钮
-    const launchWithFallback = () => {
-        // 尝试原生Android12的Settings.EXTRA_SETTINGS_EMBED_DEEP_LINK
-        window.location.href = 'intent:#Intent;action=android.settings.SETTINGS;S.android.provider.extra.SETTINGS_EMBEDDED_DEEP_LINK=android.settings.DEVICE_INFO_SETTINGS;end';
-        
-        // 最终回退方案
-        setTimeout(() => {
-            if (!document.hidden) {
-                alert("请手动进入：设置 → 系统 → 关于手机");
-            }
-        }, 1000);
-    };
-
-    const hideDialog = () => {
-        document.getElementById('nativeDialog').style.display = 'none';
-    };
-
-    document.getElementById('launchBtn').addEventListener('click', launchSettings);
-</script>
-</body>
-</html>        }
-        .miui-popup-title {
-            padding: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            border-bottom: 1px solid #eee;
-        }
-        .miui-popup-buttons {
-            display: flex;
-        }
-        .miui-popup-btn {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            color: #333;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .miui-popup-btn-cancel {
-            border-right: 1px solid #eee;
-            color: #666;
-        }
-        .miui-popup-btn-confirm {
-            color: #FF5722;
-        }
-    </style>
-</head>
-<body>
-
-<!-- 主按钮 -->
-<button id="openSettingsBtn" style="
-    margin-top: 50px;
-    padding: 15px 30px;
-    background: #FF5722;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-">查看平板电脑信息</button>
-
-<!-- 仿MIUI/EMUI的弹窗 -->
-<div id="miuiPopup" class="miui-popup">
-    <div class="miui-popup-content">
-        <div class="miui-popup-title">打开系统设置</div>
-        <div class="miui-popup-buttons">
-            <div class="miui-popup-btn miui-popup-btn-cancel" onclick="hidePopup()">取消</div>
-            <div class="miui-popup-btn miui-popup-btn-confirm" onclick="openSettingsApp()">打开</div>
-        </div>
-    </div>
-</div>
-
-<!-- 手动指引（默认隐藏） -->
-<div id="manualGuide" style="display: none; margin-top: 30px; padding: 15px; background: #fff; border-radius: 10px;">
-    <h3>无法自动跳转？</h3>
-    <p>请手动操作：</p>
-    <ol style="text-align: left;">
-        <li>打开系统<strong>「设置」</strong></li>
-        <li>进入<strong>「关于平板电脑」</strong></li>
-        <li>查看设备信息</li>
-    </ol>
-</div>
-
-<script>
-    // 主跳转逻辑
-    document.getElementById('openSettingsBtn').onclick = function() {
-        // 先尝试直接跳转
-        try {
-            window.location.href = 'intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end';
-            
-            // 如果3秒后还在当前页面，显示弹窗
-            setTimeout(function() {
-                if (!document.hidden) {
-                    showPopup();
-                }
-            }, 3000);
-        } catch (e) {
-            showPopup();
-        }
-    };
-
-    // 显示仿厂商弹窗
-    function showPopup() {
-        document.getElementById('miuiPopup').style.display = 'flex';
-    }
-
-    // 隐藏弹窗
-    function hidePopup() {
-        document.getElementById('miuiPopup').style.display = 'none';
-        document.getElementById('manualGuide').style.display = 'block';
-    }
-
-    // 弹窗中的"打开"按钮
-    function openSettingsApp() {
-        // 再次尝试跳转
-        window.location.href = 'android-app://com.android.settings/com.android.settings.Settings$DeviceInfoSettingsActivity';
-        
-        // 最终回退
-<!DOCTYPE html>
-<html>
-<head>
-    <title>跳转到「关于平板电脑」</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: 'Helvetica', Arial, sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-            text-align: center;
-        }
-        .miui-popup {
-            display: none;
+        /* 子菜单页面 */
+        .submenu {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+            background-color: var(--surface-color);
+            z-index: 100;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+            padding-top: var(--header-height);
         }
-        .miui-popup-content {
-            background: white;
-            width: 80%;
-            max-width: 300px;
-            border-radius: 12px;
-            overflow: hidden;
-            animation: fadeIn 0.3s;
+        
+        .submenu.active {
+            transform: translateX(0);
         }
+        
+        .submenu-header {
+            padding: 16px 24px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+        
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+        
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .miui-popup-title {
-            padding: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            border-bottom: 1px solid #eee;
-        }
-        .miui-popup-buttons {
-            display: flex;
-        }
-        .miui-popup-btn {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            color: #333;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .miui-popup-btn-cancel {
-            border-right: 1px solid #eee;
-            color: #666;
-        }
-        .miui-popup-btn-confirm {
-            color: #FF5722;
+        
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            -moz-osx-font-smoothing: grayscale;
+            font-feature-settings: 'liga';
         }
     </style>
 </head>
 <body>
-
-<!-- 主按钮 -->
-<button id="openSettingsBtn" style="
-    margin-top: 50px;
-    padding: 15px 30px;
-    background: #FF5722;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 16px;
-    cursor: pointer;
-">查看平板电脑信息</button>
-
-<!-- 仿MIUI/EMUI的弹窗 -->
-<div id="miuiPopup" class="miui-popup">
-    <div class="miui-popup-content">
-        <div class="miui-popup-title">打开系统设置</div>
-        <div class="miui-popup-buttons">
-            <div class="miui-popup-btn miui-popup-btn-cancel" onclick="hidePopup()">取消</div>
-            <div class="miui-popup-btn miui-popup-btn-confirm" onclick="openSettingsApp()">打开</div>
+    <!-- 顶部应用栏 -->
+    <div class="app-bar">
+        <button class="back-button material-icons" id="backButton">arrow_back</button>
+        <button class="menu-button material-icons" id="menuButton">menu</button>
+        <div class="title">设置</div>
+        <div class="actions">
+            <button class="action-button material-icons">search</button>
+            <button class="action-button material-icons">more_vert</button>
         </div>
     </div>
-</div>
-
-<!-- 手动指引（默认隐藏） -->
-<div id="manualGuide" style="display: none; margin-top: 30px; padding: 15px; background: #fff; border-radius: 10px;">
-    <h3>无法自动跳转？</h3>
-    <p>请手动操作：</p>
-    <ol style="text-align: left;">
-        <li>打开系统<strong>「设置」</strong></li>
-        <li>进入<strong>「关于平板电脑」</strong></li>
-        <li>查看设备信息</li>
-    </ol>
-</div>
-
-<script>
-    // 主跳转逻辑
-    document.getElementById('openSettingsBtn').onclick = function() {
-        // 先尝试直接跳转
-        try {
-            window.location.href = 'intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end';
+    
+    <!-- 内容区域 -->
+    <div class="content">
+        <!-- 导航抽屉 -->
+        <div class="nav-drawer" id="navDrawer">
+            <div class="search-container">
+                <div class="search-bar">
+                    <span class="material-icons icon">search</span>
+                    <input type="text" placeholder="搜索设置">
+                </div>
+            </div>
             
-            // 如果3秒后还在当前页面，显示弹窗
-            setTimeout(function() {
-                if (!document.hidden) {
-                    showPopup();
-                }
-            }, 3000);
-        } catch (e) {
-            showPopup();
-        }
-    };
-
-    // 显示仿厂商弹窗
-    function showPopup() {
-        document.getElementById('miuiPopup').style.display = 'flex';
-    }
-
-    // 隐藏弹窗
-    function hidePopup() {
-        document.getElementById('miuiPopup').style.display = 'none';
-        document.getElementById('manualGuide').style.display = 'block';
-    }
-
-    // 弹窗中的"打开"按钮
-    function openSettingsApp() {
-        // 再次尝试跳转
-        window.location.href = 'android-app://com.android.settings/com.android.settings.Settings$DeviceInfoSettingsActivity';
+            <div class="nav-item active">
+                <span class="material-icons icon">home</span>
+                <span class="label">首页</span>
+            </div>
+            
+            <div class="nav-divider"></div>
+            
+            <div class="nav-header">设备</div>
+            <div class="nav-item">
+                <span class="material-icons icon">wifi</span>
+                <span class="label">网络和互联网</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">devices</span>
+                <span class="label">已连接的设备</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">battery_full</span>
+                <span class="label">电池</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">display_settings</span>
+                <span class="label">显示</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">volume_up</span>
+                <span class="label">声音</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">storage</span>
+                <span class="label">存储</span>
+            </div>
+            
+            <div class="nav-divider"></div>
+            
+            <div class="nav-header">个性化</div>
+            <div class="nav-item">
+                <span class="material-icons icon">wallpaper</span>
+                <span class="label">壁纸与样式</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">notifications</span>
+                <span class="label">通知</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">lock</span>
+                <span class="label">安全与隐私</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">location_on</span>
+                <span class="label">位置信息</span>
+            </div>
+            
+            <div class="nav-divider"></div>
+            
+            <div class="nav-header">系统</div>
+            <div class="nav-item">
+                <span class="material-icons icon">language</span>
+                <span class="label">语言与输入法</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">date_range</span>
+                <span class="label">日期与时间</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">accessibility</span>
+                <span class="label">无障碍</span>
+            </div>
+            <div class="nav-item">
+                <span class="material-icons icon">system_update</span>
+                <span class="label">系统更新</span>
+            </div>
+        </div>
         
-        // 最终回退
-        setTimeout(function() {
-            hidePopup();
-        }, 1000);
-    }
-</script>
+        <!-- 主内容区域 -->
+        <div class="main-content" id="mainContent">
+            <div class="section fade-in">
+                <div class="section-title">推荐设置</div>
+                <div class="setting-item" data-submenu="internet">
+                    <div class="icon">
+                        <span class="material-icons">wifi</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">网络和互联网</div>
+                        <div class="subtitle">Wi-Fi, 移动网络, 热点</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+                <div class="setting-item" data-submenu="notifications">
+                    <div class="icon">
+                        <span class="material-icons">notifications</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">通知</div>
+                        <div class="subtitle">管理应用通知</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+                <div class="setting-item" data-submenu="battery">
+                    <div class="icon">
+                        <span class="material-icons">battery_full</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">电池</div>
+                        <div class="subtitle">86% 剩余 - 约9小时</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section fade-in">
+                <div class="section-title">隐私与安全</div>
+                <div class="setting-item" data-submenu="security">
+                    <div class="icon">
+                        <span class="material-icons">lock</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">安全</div>
+                        <div class="subtitle">屏幕锁定、设备加密</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+                <div class="setting-item" data-submenu="location">
+                    <div class="icon">
+                        <span class="material-icons">location_on</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">位置信息</div>
+                        <div class="subtitle">开启</div>
+                    </div>
+                    <div class="action">
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting-item" data-submenu="privacy">
+                    <div class="icon">
+                        <span class="material-icons">privacy_tip</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">隐私</div>
+                        <div class="subtitle">权限管理、广告设置</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section fade-in">
+                <div class="section-title">个性化</div>
+                <div class="setting-item" data-submenu="wallpaper">
+                    <div class="icon">
+                        <span class="material-icons">wallpaper</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">壁纸与样式</div>
+                        <div class="subtitle">更改壁纸、图标和颜色</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+                <div class="setting-item" data-submenu="display">
+                    <div class="icon">
+                        <span class="material-icons">display_settings</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">显示</div>
+                        <div class="subtitle">亮度、深色主题、字体大小</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+                <div class="setting-item" data-submenu="sound">
+                    <div class="icon">
+                        <span class="material-icons">volume_up</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">声音</div>
+                        <div class="subtitle">铃声、通知、震动</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section fade-in">
+                <div class="section-title">应用</div>
+                <div class="setting-item" data-submenu="apps">
+                    <div class="icon">
+                        <span class="material-icons">apps</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">应用管理</div>
+                        <div class="subtitle">查看所有应用、权限</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+                <div class="setting-item" data-submenu="default">
+                    <div class="icon">
+                        <span class="material-icons">settings_applications</span>
+                    </div>
+                    <div class="details">
+                        <div class="title">默认应用</div>
+                        <div class="subtitle">浏览器、电话、短信</div>
+                    </div>
+                    <div class="action">
+                        <span class="material-icons">chevron_right</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 网络和互联网子菜单 -->
+    <div class="submenu" id="internetSubmenu">
+        <div class="submenu-header">网络和互联网</div>
+        <div class="section">
+            <div class="setting-item">
+                <div class="icon">
+                    <span class="material-icons">wifi</span>
+                </div>
+                <div class="details">
+                    <div class="title">Wi-Fi</div>
+                    <div class="subtitle">已连接到 HomeNetwork</div>
+                </div>
+                <div class="action">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="setting-item">
+                <div class="icon">
+                    <span class="material-icons">sim_card</span>
+                </div>
+                <div class="details">
+                    <div class="title">SIM 卡和移动网络</div>
+                    <div class="subtitle">中国移动 · 5G</div>
+                </div>
+                <div class="action">
+                    <span class="material-icons">chevron_right</span>
+                </div>
+            </div>
+            <div class="setting-item">
+                <div class="icon">
+                    <span class="material-icons">bluetooth</span>
+                </div>
+                <div class="details">
+                    <div class="title">蓝牙</div>
+                    <div class="subtitle">开启</div>
+                </div>
+                <div class="action">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="setting-item">
+                <div class="icon">
+                    <span class="material-icons">share</span>
+                </div>
+                <div class="details">
+                    <div class="title">热点和网络共享</div>
+                    <div class="subtitle">便携式热点、蓝牙网络共享</div>
+                </div>
+                <div class="action">
+                    <span class="material-icons">chevron_right</span>
+                </div>
+            </div>
+            <div class="setting-item">
+                <div class="icon">
+                    <span class="material-icons">vpn_lock</span>
+                </div>
+                <div class="details">
+                    <div class="title">VPN</div>
+                    <div class="subtitle">未连接</div>
+                </div>
+                <div class="action">
+                    <span class="material-icons">chevron_right</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部导航 -->
+    <div class="bottom-nav">
+        <div class="nav-tab active">
+            <span class="material-icons icon">settings</span>
+            <span>设置</span>
+        </div>
+        <div class="nav-tab">
+            <span class="material-icons icon">notifications</span>
+            <span>通知</span>
+        </div>
+        <div class="nav-tab">
+            <span class="material-icons icon">battery_full</span>
+            <span>电池</span>
+        </div>
+        <div class="nav-tab">
+            <span class="material-icons icon">storage</span>
+            <span>存储</span>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 菜单按钮
+            const menuButton = document.getElementById('menuButton');
+            const navDrawer = document.getElementById('navDrawer');
+            
+            menuButton.addEventListener('click', function() {
+                navDrawer.classList.toggle('open');
+            });
+            
+            // 返回按钮
+            const backButton = document.getElementById('backButton');
+            const mainContent = document.getElementById('mainContent');
+            const submenus = document.querySelectorAll('.submenu');
+            
+            backButton.addEventListener('click', function() {
+                submenus.forEach(submenu => {
+                    submenu.classList.remove('active');
+                });
+                backButton.style.display = 'none';
+                mainContent.style.display = 'block';
+            });
+            
+            // 设置项点击打开子菜单
+            const settingItems = document.querySelectorAll('.setting-item');
+            
+            settingItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const submenuId = this.getAttribute('data-submenu');
+                    if (submenuId) {
+                        const submenu = document.getElementById(submenuId + 'Submenu');
+                        if (submenu) {
+                            submenu.classList.add('active');
+                            mainContent.style.display = 'none';
+                            backButton.style.display = 'block';
+                        }
+                    }
+                });
+            });
+            
+            // 导航项点击
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 在移动端点击后关闭抽屉
+                    if (window.innerWidth <= 768) {
+                        navDrawer.classList.remove('open');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
