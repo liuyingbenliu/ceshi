@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>打开安卓设置</title>
+    <title>安卓设置跳转</title>
+    <script>
+        function launchAndroidIntent(action) {
+            // 尝试直接跳转
+            window.location.href = "intent:#Intent;action=" + action + ";end";
+            
+            // 如果跳转失败，显示备用方案
+            setTimeout(function() {
+                alert("跳转失败，请尝试以下方法：\n1. 使用Chrome浏览器打开\n2. 手动复制此链接到ADB命令执行：\nadb shell am start -a " + action);
+            }, 500);
+        }
+    </script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h2 {
-            color: #333;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        a {
-            display: inline-block;
-            margin: 8px 0;
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        button {
+            display: block;
+            margin: 10px 0;
             padding: 10px 15px;
-            background-color: #4285f4;
+            background: #4285f4;
             color: white;
-            text-decoration: none;
+            border: none;
             border-radius: 4px;
-            transition: background-color 0.3s;
+            cursor: pointer;
         }
-        a:hover {
-            background-color: #3367d6;
-        }
-        .tablet-info {
-            background-color: #673ab7;
-        }
-        .tablet-info:hover {
-            background-color: #5e35b1;
-        }
+        button:hover { background: #3367d6; }
+        .tablet { background: #673ab7; }
+        .tablet:hover { background: #5e35b1; }
     </style>
 </head>
 <body>
-    <h2>点击以下链接跳转：</h2>
-    <a href="intent:#Intent;action=android.settings.SETTINGS;end">打开系统设置</a><br>
-    <a href="intent:#Intent;action=android.settings.WIFI_SETTINGS;end">打开 Wi-Fi 设置</a><br>
-    <a href="intent:#Intent;action=android.settings.APPLICATION_SETTINGS;end">打开应用管理</a><br>
-    <a href="intent:#Intent;action=android.settings.NOTIFICATION_SETTINGS;end">打开通知设置</a><br>
-    <a href="intent:#Intent;action=android.settings.DEVICE_INFO_SETTINGS;end" class="tablet-info">关于平板电脑</a>
+    <h2>安卓设置快捷入口</h2>
+    
+    <button onclick="launchAndroidIntent('android.settings.SETTINGS')">系统设置</button>
+    <button onclick="launchAndroidIntent('android.settings.WIFI_SETTINGS')">Wi-Fi设置</button>
+    <button onclick="launchAndroidIntent('android.settings.APPLICATION_SETTINGS')">应用管理</button>
+    <button onclick="launchAndroidIntent('android.settings.NOTIFICATION_SETTINGS')">通知设置</button>
+    <button onclick="launchAndroidIntent('android.settings.DEVICE_INFO_SETTINGS')" class="tablet">关于平板电脑</button>
+
+    <p style="color: #666; margin-top: 20px;">
+        提示：如果点击无反应，请尝试使用Chrome浏览器打开，或手动执行ADB命令。
+    </p>
 </body>
 </html>
