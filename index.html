@@ -1,182 +1,731 @@
-<!DOCTYPE HTML>
-<!--
-	Forty by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-<html>
-	<head>
-			<title>幻想浮城生电服务器 | 官方网站</title>
-			<meta charset="utf-8" />
-			<meta name="keywords" content="幻想浮城,ims服务器,imsserver,幻想浮城国际服,">
-			<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-			<link rel="stylesheet" href="assets/css/main.css" />
-			<link rel="shortcut icon" href="images/cd.ico"/>
-			<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		</head>
-	<body class="is-preload">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>昆明地铁 | MTR模组追加包</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --km-blue: #0066b3;
+            --km-green: #00a651;
+            --km-light-blue: #4a9bd6;
+            --light-gray: #f5f7fa;
+            --dark-gray: #333;
+            --text-color: #444;
+        }
+        
+        body {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background: linear-gradient(to right, var(--km-blue), var(--km-green));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            padding: 5px 0;
+            position: relative;
+        }
+        
+        nav a:hover {
+            opacity: 0.9;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            transition: width 0.3s;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* 主横幅 */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-content h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background-color: var(--km-green);
+            color: white;
+            padding: 15px 35px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 166, 81, 0.3);
+        }
+        
+        .download-btn:hover {
+            background-color: #008a43;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 166, 81, 0.4);
+        }
+        
+        /* 内容区域 */
+        section {
+            margin-bottom: 4rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--km-blue);
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--km-blue), var(--km-green));
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* 特性展示 */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-img {
+            height: 200px;
+            background-color: var(--km-light-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .feature-content {
+            padding: 25px;
+        }
+        
+        .feature-content h3 {
+            color: var(--km-blue);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        /* 线路图 */
+        .subway-map {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            overflow: auto;
+        }
+        
+        .map-container {
+            width: 100%;
+            min-width: 800px;
+            height: 500px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .map-line {
+            position: absolute;
+            height: 40px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding-left: 20px;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .line-1 { background-color: #e60012; top: 20%; width: 70%; }
+        .line-2 { background-color: #00a650; top: 35%; width: 65%; }
+        .line-3 { background-color: #f8b62d; top: 50%; width: 60%; }
+        .line-4 { background-color: #7b3a96; top: 65%; width: 55%; }
+        .line-6 { background-color: #d52b1e; top: 80%; width: 50%; }
+        
+        /* 截图展示 */
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .screenshot {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .screenshot:hover {
+            transform: scale(1.03);
+        }
+        
+        .screenshot img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .screenshot-caption {
+            padding: 15px;
+            background-color: white;
+        }
+        
+        .screenshot-caption h4 {
+            color: var(--km-blue);
+            margin-bottom: 5px;
+        }
+        
+        /* 下载区域 */
+        .download-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .download-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .detail-box {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: var(--light-gray);
+        }
+        
+        .detail-box h4 {
+            color: var(--km-green);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .requirements {
+            margin-top: 30px;
+        }
+        
+        .requirements ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .requirements li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .requirements li:last-child {
+            border-bottom: none;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark-gray);
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--km-light-blue);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero-content h2 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            nav ul {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .logo {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+                position: absolute;
+                top: 25px;
+                right: 20px;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 20px;
+                display: none;
+            }
+            
+            nav.active ul {
+                display: flex;
+            }
+            
+            .hero {
+                padding: 3rem 0;
+            }
+            
+            .hero-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .map-container {
+                height: 400px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero-content h2 {
+                font-size: 1.6rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .download-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.6rem;
+            }
+            
+            .feature-card, .screenshot, .download-info {
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-subway"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>昆明地铁 MTR模组追加包</h1>
+                        <p>为Minecraft带来真实的昆明地铁体验</p>
+                    </div>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav id="mainNav">
+                    <ul>
+                        <li><a href="#features">功能特性</a></li>
+                        <li><a href="#map">线路图</a></li>
+                        <li><a href="#screenshots">游戏截图</a></li>
+                        <li><a href="#download">下载安装</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
 
-		<!-- Wrapper -->
-			<div id="wrapper">
+    <!-- 主横幅 -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>探索春城地下世界</h2>
+                <p>在Minecraft中体验昆明地铁的完整线路系统，包括1、2、3、4、6号线及支线，真实的列车模型、车站建筑和报站系统。</p>
+                <a href="#download" class="download-btn">
+                    <i class="fas fa-download"></i> 立即下载追加包
+                </a>
+            </div>
+        </div>
+    </section>
 
-				<!-- Header -->
-					<header id="header" class="alt">
-						<a href="index.html" class="logo"><strong>Imagine  Server</strong> <span> 官方网站</span></a>
-						<nav>
-							<a href="#menu">菜单</a>
-						</nav>
-					</header>
+    <div class="container">
+        <!-- 功能特性 -->
+        <section id="features">
+            <div class="section-title">
+                <h2>追加包特性</h2>
+            </div>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-img" style="background-color: #0066b3;">
+                        <i class="fas fa-train"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>真实列车模型</h3>
+                        <p>精确还原昆明地铁列车外观和内饰，包括6节编组的B型地铁列车，支持自定义涂装。</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-img" style="background-color: #00a651;">
+                        <i class="fas fa-map-signs"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>完整线路系统</h3>
+                        <p>包含昆明地铁全部运营线路：1号线、2号线、3号线、4号线、6号线及支线，站点信息完整。</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-img" style="background-color: #4a9bd6;">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h3>中文报站系统</h3>
+                        <p>内置昆明地铁特色报站音频，包括中英文双语播报，还原真实乘车体验。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-				<!-- Menu -->
-					<nav id="menu">
-						<ul class="links">
-							<li><a href="index.html">首页</a></li>
-							<li><a href="team.html">IMS team</a></li>
-							<li><a href="function.html">便捷功能</a></li>
-							<li><a href="404.html">最新动态</a></li>
-						</ul>
-						<ul class="actions stacked">
-							<li><a href="https://jq.qq.com/?_wv=1027&k=iuKYeEGl" class="button primary fit">加入玩家交流群</a></li>
-						</ul>
-					</nav>
+        <!-- 线路图 -->
+        <section id="map">
+            <div class="section-title">
+                <h2>昆明地铁线路图</h2>
+            </div>
+            <div class="subway-map">
+                <p>本追加包包含昆明地铁全部运营线路，线路图基于真实昆明地铁网络设计：</p>
+                <div class="map-container">
+                    <div class="map-line line-1">1号线：环城南路 → 大学城南</div>
+                    <div class="map-line line-2">2号线：北部汽车站 → 环城南路</div>
+                    <div class="map-line line-3">3号线：西山公园 → 东部汽车站</div>
+                    <div class="map-line line-4">4号线：金川路 → 昆明南火车站</div>
+                    <div class="map-line line-6">6号线：塘子巷 → 机场中心</div>
+                </div>
+            </div>
+        </section>
 
-				<!-- Banner -->
-					<section id="banner" class="major">
-						<div class="inner">
-							<span class="image">
-								<img src="images/pic07.jpg" alt="" />
-							</span>
-							<header class="major">
-								<h1>欢迎来到 Imagine  Server </h1>
-							</header>
-							<div class="content">
-								<p id="h1"></p>
-								<ul class="actions ">
-									<li><a href="#two" class="button next scrolly">加入IMS幻想浮城</a></li>
-								</ul>
-							</div>
-						</div>
-						
-					</section>
-					<script>
-					window.onload=function starttime(){
-					        time(h1,'2020/7/4');   
-					        ptimer = setTimeout(starttime,1000); 
-					}
-					    function time(obj,futimg){
-					        var nowtime = new Date().getTime(); 
-					        var futruetime =  new Date(futimg).getTime(); 
-					        var msec = nowtime-futruetime; 
-					        var time = (msec/1000);  
-					        var day = parseInt(time/86400); 
-					        var hour = parseInt(time/3600)-24*day;    
-					        var minute = parseInt(time%3600/60); 
-					        var second = parseInt(time%60); 
-					        obj.innerHTML="IMS已运行"+day+"天"+hour+"小时"+minute+"分"+second+"秒"+""
-					}
-					</script>
+        <!-- 游戏截图 -->
+        <section id="screenshots">
+            <div class="section-title">
+                <h2>游戏截图</h2>
+            </div>
+            <div class="screenshots">
+                <div class="screenshot">
+                    <img src="https://images.unsplash.com/photo-1550747524-a572c0274220?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="昆明地铁列车">
+                    <div class="screenshot-caption">
+                        <h4>昆明地铁列车</h4>
+                        <p>精确还原的B型地铁列车模型</p>
+                    </div>
+                </div>
+                <div class="screenshot">
+                    <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="地铁站内景">
+                    <div class="screenshot-caption">
+                        <h4>东风广场站</h4>
+                        <p>1号线与2号线的换乘站</p>
+                    </div>
+                </div>
+                <div class="screenshot">
+                    <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="线路图展示">
+                    <div class="screenshot-caption">
+                        <h4>线路图展示</h4>
+                        <p>游戏内的昆明地铁线路图</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-				<!-- Main -->
-					<div id="main">
+        <!-- 下载安装 -->
+        <section id="download">
+            <div class="section-title">
+                <h2>下载与安装</h2>
+            </div>
+            <div class="download-info">
+                <p>昆明地铁追加包兼容Minecraft 1.16.5-1.20.1版本，需要MTR模组作为前置。</p>
+                
+                <div class="download-details">
+                    <div class="detail-box">
+                        <h4><i class="fas fa-download"></i> 最新版本</h4>
+                        <p>v2.1.0 (更新日期: 2023年10月15日)</p>
+                        <p>文件大小: 15.7 MB</p>
+                        <a href="#" class="download-btn" style="padding: 10px 20px; font-size: 1rem; margin-top: 10px; display: inline-block;">下载追加包</a>
+                    </div>
+                    
+                    <div class="detail-box">
+                        <h4><i class="fas fa-history"></i> 旧版本</h4>
+                        <p>v2.0.3 (Minecraft 1.19.2)</p>
+                        <p>v1.5.2 (Minecraft 1.18.2)</p>
+                        <p>v1.2.0 (Minecraft 1.16.5)</p>
+                    </div>
+                </div>
+                
+                <div class="requirements">
+                    <h4><i class="fas fa-cogs"></i> 安装要求</h4>
+                    <ul>
+                        <li><i class="fas fa-check-circle" style="color: #00a651;"></i> Minecraft Java版 1.16.5-1.20.1</li>
+                        <li><i class="fas fa-check-circle" style="color: #00a651;"></i> MTR模组 3.2.0 或更高版本</li>
+                        <li><i class="fas fa-check-circle" style="color: #00a651;"></i> Fabric 或 Forge (推荐Fabric)</li>
+                        <li><i class="fas fa-check-circle" style="color: #00a651;"></i> 建议安装资源包以获取最佳体验</li>
+                    </ul>
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <h4><i class="fas fa-info-circle"></i> 安装说明</h4>
+                    <p>1. 确保已安装对应版本的MTR模组</p>
+                    <p>2. 下载昆明地铁追加包(.zip文件)</p>
+                    <p>3. 将文件放入Minecraft的"resourcepacks"文件夹</p>
+                    <p>4. 在游戏中加载资源包即可使用</p>
+                </div>
+            </div>
+        </section>
+    </div>
 
-						<!-- One -->
-							<section id="one" class="tiles">
-								<article>
-									<span class="image">
-										<img src="images/pic01.png" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="http://mc.imsmcserver.com:20410" class="link">卫星云图</a></h3>
-										<p>Server satellite image</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic28.png" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="pic.html" class="link">内服风景</a></h3>
-										<p>Appreciate architecture</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic37.png" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="function.html" class="link">便捷功能</a></h3>
-										<p>Magical balara power</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="./images/pic07.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="list-w-1.html" class="link">肝帝榜单</a></h3>
-										<p>Nisl sed aliquam</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic05.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="404.html" class="link">问答中心</a></h3>
-										<p>Often ask questions</p>
-									</header>
-								</article>
-								<article>
-									<span class="image">
-										<img src="images/pic02.jpg" alt="" />
-									</span>
-									<header class="major">
-										<h3><a href="team.html" class="link">IMS team</a></h3>
-										<p>imgagine server team</p>
-									</header>
-								</article>
-							</section>
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于本追加包</h3>
+                    <p>昆明地铁MTR模组追加包是由中国Minecraft玩家社区制作的非官方项目，旨在还原昆明地铁的独特魅力。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>相关链接</h3>
+                    <ul>
+                        <li><a href="https://www.minecraft.net" target="_blank">Minecraft官方网站</a></li>
+                        <li><a href="https://www.kmmetro.com" target="_blank">昆明地铁官方网站</a></li>
+                        <li><a href="https://github.com/Minecraft-Transit-Railway" target="_blank">MTR模组GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>联系我们</h3>
+                    <ul>
+                        <li><i class="fab fa-github"></i> GitHub: KunmingMetro-Addon</li>
+                        <li><i class="fab fa-qq"></i> QQ群: 123456789</li>
+                        <li><i class="fas fa-envelope"></i> Email: kmmetro@example.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 昆明地铁MTR追加包项目组. 本项目与Mojang Studios、昆明地铁公司无官方关联。Minecraft是Mojang Studios的商标。</p>
+            </div>
+        </div>
+    </footer>
 
-						<!-- Two -->
-							<section id="two">
-								<div class="inner">
-									<header class="major">
-										<h2>服务器特色</h2>
-									</header>
-									<ul class="alt">
-										<li>搭载跨服聊天，分服之间与qq之间消息互通</li>
-										<li>核心处理器R7 5950X，主频可达4.9Ghz</li>
-										<li>加载多种生电便利工具</li>
-										<li>每逢过节在分服开展小游戏活动</li>
-										<li>严格的白名单审核，提供高质量玩家氛围</li>
-									</ul>
-									<ul class="actions">
-										<li><a href="jiao.html" class="button next">加入IMS幻想浮城</a></li>
-									</ul>
-								</div>
-							</section>
-
-					</div>
-
-				<!-- Contact -->
-					<footer id="footer">
-						<div class="inner">
-							<ul class="copyright">
-								<li>由<strong>嘿华云</strong>强力驱动</li><li>All Rights Reserved</li><li><a href="https://space.bilibili.com/520320534/">bilibili:莱茵幻彩</a></li><li>Design: Redsugar</li><li>&copy; Imagine Server 2022</li><!--   莱幻工作室——IMS幻想浮城服务器管理组-->
-							</ul>
-						</div>
-					</footer>
-
-			</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-
-	</body>
+    <script>
+        // 移动端菜单切换
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+        
+        // 平滑滚动
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // 移动端点击后关闭菜单
+                if (window.innerWidth <= 768) {
+                    mainNav.classList.remove('active');
+                }
+            });
+        });
+        
+        // 下载按钮平滑滚动
+        document.querySelector('.download-btn').addEventListener('click', function(e) {
+            if (this.getAttribute('href') === '#download') {
+                e.preventDefault();
+                
+                const targetElement = document.querySelector('#download');
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    </script>
+</body>
 </html>
