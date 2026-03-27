@@ -21,7 +21,7 @@
             height: 100vh;
         }
 
-        /* 动态星空背景层 */
+        /* 初始背景层 - 保持不变 */
         .background {
             position: fixed;
             top: 0;
@@ -32,7 +32,6 @@
             z-index: -1;
         }
 
-        /* 模拟扫描线效果 */
         .scanline {
             position: fixed;
             top: 0;
@@ -55,9 +54,19 @@
             height: 100vh;
             text-align: center;
             animation: fadeIn 2s ease-out;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
         }
 
-        /* 装饰性UI边框 */
+        /* 当主容器隐藏时 */
+        .container.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; /* 防止点击隐藏的内容 */
+        }
+
+        /* UI 边框等样式 - 保持不变 */
         .ui-box {
             position: relative;
             padding: 40px 80px;
@@ -82,7 +91,6 @@
             margin-bottom: 30px;
         }
 
-        /* 交互按钮 */
         .btn {
             padding: 12px 40px;
             background: transparent;
@@ -104,6 +112,211 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* --- 群星画面样式 --- */
+        .galaxy-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #050510 0%, #000 100%);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+            z-index: 100; /* 确保在最上层 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .galaxy-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 生成星星的动画效果 */
+        .stars {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow:
+                /* 随机生成大量星星，你可以根据需要增加更多 */
+                100px 200px #fff,
+                200px 50px #fff,
+                300px 150px #fff,
+                400px 220px #fff,
+                500px 80px #fff,
+                600px 270px #fff,
+                700px 120px #fff,
+                800px 300px #fff,
+                900px 100px #fff,
+                150px 350px #fff,
+                250px 420px #fff,
+                350px 50px #fff,
+                450px 380px #fff,
+                550px 170px #fff,
+                650px 450px #fff,
+                750px 280px #fff,
+                850px 400px #fff,
+                950px 20px #fff,
+                50px 480px #fff,
+                180px 30px #fff,
+                280px 250px #fff,
+                380px 400px #fff,
+                480px 100px #fff,
+                580px 320px #fff,
+                680px 50px #fff,
+                780px 200px #fff,
+                880px 460px #fff,
+                980px 250px #fff,
+                120px 100px #fff,
+                220px 300px #fff,
+                320px 450px #fff,
+                420px 20px #fff,
+                520px 370px #fff,
+                620px 150px #fff,
+                720px 410px #fff,
+                820px 60px #fff,
+                920px 330px #fff,
+                /* 再来几层星星，增加密度 */
+                130px 210px #fff,
+                230px 60px #fff,
+                330px 160px #fff,
+                430px 230px #fff,
+                530px 90px #fff,
+                630px 280px #fff,
+                730px 130px #fff,
+                830px 310px #fff,
+                930px 110px #fff,
+                160px 360px #fff,
+                260px 430px #fff,
+                360px 60px #fff,
+                460px 390px #fff,
+                560px 180px #fff,
+                660px 460px #fff,
+                760px 290px #fff,
+                860px 410px #fff,
+                960px 30px #fff,
+                60px 490px #fff,
+                190px 40px #fff,
+                290px 260px #fff,
+                390px 410px #fff,
+                490px 110px #fff,
+                590px 330px #fff,
+                690px 60px #fff,
+                790px 210px #fff,
+                890px 470px #fff,
+                990px 260px #fff,
+                130px 110px #fff,
+                230px 310px #fff,
+                330px 460px #fff,
+                430px 30px #fff,
+                530px 380px #fff,
+                630px 160px #fff,
+                730px 420px #fff,
+                830px 70px #fff,
+                930px 340px #fff;
+            animation: zoomAndFade 15s infinite alternate; /* 缩放和淡入淡出动画 */
+        }
+
+        .stars::after {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: transparent;
+            box-shadow:
+                /* 第二层星星，稍微偏移，制造深度 */
+                -50px -100px #fff,
+                -150px 80px #fff,
+                -250px -20px #fff,
+                -350px 180px #fff,
+                -450px 30px #fff,
+                -550px 250px #fff,
+                -650px 0px #fff,
+                -750px 190px #fff,
+                -850px 60px #fff,
+                -950px 320px #fff,
+                -80px 120px #fff,
+                -180px 380px #fff,
+                -280px 20px #fff,
+                -380px 290px #fff,
+                -480px 150px #fff,
+                -580px 400px #fff,
+                -680px 80px #fff,
+                -780px 350px #fff,
+                -880px 10px #fff,
+                -980px 230px #fff,
+                -20px 400px #fff,
+                -120px 50px #fff,
+                -220px 220px #fff,
+                -320px 300px #fff,
+                -420px 70px #fff,
+                -520px 310px #fff,
+                -620px 100px #fff,
+                -720px 260px #fff,
+                -820px 40px #fff,
+                -920px 180px #fff;
+            animation: zoomAndFade 20s infinite alternate-reverse; /* 反向动画，增加层次感 */
+        }
+
+        @keyframes zoomAndFade {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.7;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(0.8);
+                opacity: 0.7;
+            }
+        }
+
+        /* 另一个星空层，模拟景深 */
+        .stars2 {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: transparent;
+            box-shadow:
+                100px 10px rgba(255,255,255,0.8),
+                200px 120px rgba(255,255,255,0.8),
+                300px 30px rgba(255,255,255,0.8),
+                400px 150px rgba(255,255,255,0.8),
+                500px 250px rgba(255,255,255,0.8),
+                600px 80px rgba(255,255,255,0.8),
+                700px 190px rgba(255,255,255,0.8),
+                800px 40px rgba(255,255,255,0.8),
+                900px 220px rgba(255,255,255,0.8),
+                150px 300px rgba(255,255,255,0.8),
+                /* 更多星星 */
+                50px 50px rgba(255,255,255,0.8),
+                180px 400px rgba(255,255,255,0.8),
+                320px 180px rgba(255,255,255,0.8),
+                480px 450px rgba(255,255,255,0.8),
+                620px 10px rgba(255,255,255,0.8),
+                750px 350px rgba(255,255,255,0.8);
+            animation: moveStars 60s linear infinite; /* 缓慢移动动画 */
+        }
+
+        @keyframes moveStars {
+            from {
+                transform: translateX(0) translateY(0);
+            }
+            to {
+                transform: translateX(-100px) translateY(-50px); /* 模拟缓慢移动 */
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -111,14 +324,44 @@
     <div class="background"></div>
     <div class="scanline"></div>
 
-    <div class="container">
+    <div class="container" id="main-ui">
         <div class="ui-box">
             <div class="title">ENDFIELD</div>
             <div class="subtitle">VOYAGE TO THE STARS // 踏星之旅</div>
-            <button class="btn">开始协议</button>
+            <button class="btn" id="enter-galaxy-btn">开始协议</button>
         </div>
     </div>
 
+    <div class="galaxy-screen" id="galaxy-screen">
+        <div class="stars"></div>
+        <div class="stars2"></div>
+        <span>探索群星</span>
+    </div>
+
+    <script>
+        const enterGalaxyBtn = document.getElementById('enter-galaxy-btn');
+        const mainUi = document.getElementById('main-ui');
+        const galaxyScreen = document.getElementById('galaxy-screen');
+
+        enterGalaxyBtn.addEventListener('click', () => {
+            mainUi.classList.add('hidden'); // 隐藏主 UI
+            // 等待主 UI 隐藏动画完成后再显示群星画面，确保平滑过渡
+            setTimeout(() => {
+                galaxyScreen.classList.add('active'); // 激活群星画面
+                // 可以在这里添加更多群星画面的初始化逻辑
+            }, 1000); // 1秒是 mainUi 的 transition-duration
+        });
+
+        // 如果需要返回按钮，可以在 galaxy-screen 中添加
+        // 例如：
+        // const backBtn = document.getElementById('back-btn');
+        // backBtn.addEventListener('click', () => {
+        //     galaxyScreen.classList.remove('active');
+        //     setTimeout(() => {
+        //         mainUi.classList.remove('hidden');
+        //     }, 1000);
+        // });
+    </script>
+
 </body>
 </html>
-
