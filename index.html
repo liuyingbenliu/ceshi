@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Endfield | 协议终端</title>
+    <title>Endfield | 多色星轨终端</title>
     <style>
         :root {
             --accent: #ff4d00;
@@ -19,26 +19,25 @@
             color: #fff; font-family: "Segoe UI", "PingFang SC", sans-serif;
         }
 
-        /* --- 全局装饰 --- */
+        /* 装饰层 */
         .overlay-deco {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.9) 100%);
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
             pointer-events: none; z-index: 5;
         }
 
-        /* --- 1. 启动大厅 (Splash) --- */
+        /* 启动屏 */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; justify-content: center; align-items: center;
             z-index: 100; background: #000;
-            transition: all 1.2s cubic-bezier(0.7, 0, 0.3, 1);
+            transition: all 1s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
         .auth-card {
             padding: 50px 80px; border: 1px solid var(--glass-border);
             background: var(--glass); backdrop-filter: blur(10px);
-            text-align: center; position: relative;
-            clip-path: polygon(0 0, 92% 0, 100% 15%, 100% 100%, 8% 100%, 0 85%);
+            text-align: center; clip-path: polygon(0 0, 92% 0, 100% 15%, 100% 100%, 8% 100%, 0 85%);
         }
 
         .auth-card h1 { font-size: 3rem; letter-spacing: 12px; margin: 0; font-weight: 900; }
@@ -47,25 +46,25 @@
         .btn-launch {
             background: transparent; border: 1px solid var(--accent);
             color: var(--accent); padding: 15px 45px; cursor: pointer;
-            letter-spacing: 5px; transition: 0.3s;
+            letter-spacing: 5px; transition: 0.3s; font-weight: bold;
         }
 
         .btn-launch:hover {
             background: var(--accent); color: #fff; box-shadow: 0 0 30px var(--accent);
         }
 
-        /* --- 2. 星轨画布 --- */
+        /* 背景画布 */
         #star-canvas {
             position: fixed; top: 0; left: 0; z-index: 1;
-            opacity: 0; transition: opacity 3s ease;
+            opacity: 0; transition: opacity 2.5s ease;
         }
 
-        /* --- 3. 交互 UI 面板 --- */
+        /* 主UI层 */
         #main-ui {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 10; display: none; padding: 60px;
             grid-template-columns: 420px 1fr; align-items: center;
-            animation: uiFadeIn 2s ease forwards;
+            animation: uiFadeIn 1.5s ease forwards;
         }
 
         .side-panel {
@@ -75,14 +74,12 @@
             border-bottom: 1px solid var(--glass-border);
         }
 
-        .panel-tag { color: var(--accent); font-size: 0.7rem; margin-bottom: 10px; opacity: 0.8; }
-        .panel-title { font-size: 2rem; margin: 0 0 20px 0; font-weight: 800; letter-spacing: 2px; }
+        .panel-tag { color: var(--accent); font-size: 0.7rem; margin-bottom: 10px; }
+        .panel-title { font-size: 2rem; margin: 0 0 20px 0; font-weight: 800; }
         .panel-body { color: #ccc; line-height: 1.8; font-size: 0.95rem; margin-bottom: 30px; }
 
-        /* 底部导航 */
         .nav-footer {
-            position: absolute; bottom: 60px; left: 60px;
-            display: flex; gap: 20px;
+            position: absolute; bottom: 60px; left: 60px; display: flex; gap: 20px;
         }
 
         .nav-btn {
@@ -91,13 +88,11 @@
             font-size: 0.75rem; letter-spacing: 2px; transition: 0.3s;
         }
 
-        .nav-btn:hover, .nav-btn.active {
-            border-color: var(--accent); color: var(--accent);
-        }
+        .nav-btn:hover, .nav-btn.active { border-color: var(--accent); color: var(--accent); }
 
         @keyframes uiFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
         }
     </style>
 </head>
@@ -117,28 +112,35 @@
 
     <div id="main-ui">
         <div class="side-panel">
-            <div class="panel-tag">// TERMINAL_DATA_DECRYPTED</div>
-            <h2 id="ui-header" class="panel-title">系统就绪</h2>
+            <div class="panel-tag">// MULTI_COLOR_TRAILS_ACTIVE</div>
+            <h2 id="ui-header" class="panel-title">彩色星轨监测</h2>
             <div id="ui-body" class="panel-body">
-                欢迎来到终末地协议终端。正在实时监测塔卫二的星轨频率。
-                当前连接状态稳定，等待进一步指令。
+                终端已切换至广谱观察模式。正在捕捉不同频率的星体轨迹。
+                彩色粒子代表不同的能源读数。
             </div>
             <div style="width: 100%; height: 2px; background: linear-gradient(90deg, var(--accent), transparent);"></div>
         </div>
 
         <div class="nav-footer">
-            <div class="nav-btn active" onclick="updateContent('home', this)">概览</div>
-            <div class="nav-btn" onclick="updateContent('info', this)">情报</div>
-            <div class="nav-btn" onclick="location.reload()">重启</div>
+            <div class="nav-btn active" onclick="updateContent('home', this)">实时概览</div>
+            <div class="nav-btn" onclick="updateContent('info', this)">能源分析</div>
+            <div class="nav-btn" onclick="location.reload()">断开连接</div>
         </div>
     </div>
 
     <script>
-        // --- 星轨渲染引擎 ---
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-        const starCount = 450;
+        const starCount = 400; // 稍微减少数量以适配更大的尺寸，保持画面清爽
+        
+        // 定义配色方案
+        const colors = [
+            'rgba(255, 77, 0, ',   // 终末地橙
+            'rgba(0, 200, 255, ',  // 极光蓝
+            'rgba(180, 100, 255, ', // 虚空紫
+            'rgba(255, 255, 255, '  // 纯净白
+        ];
 
         class Star {
             constructor() {
@@ -147,11 +149,14 @@
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                // 计算相对于中心点的距离和角度
                 this.dist = Math.sqrt(Math.pow(this.x - canvas.width/2, 2) + Math.pow(this.y - canvas.height/2, 2));
                 this.angle = Math.atan2(this.y - canvas.height/2, this.x - canvas.width/2);
-                this.speed = (Math.random() * 0.003 + 0.001); // 旋转速度
-                this.brightness = Math.random() * 0.5 + 0.2;
+                
+                // --- 修改点：星星变大，速度随机性增加 ---
+                this.size = Math.random() * 2.5 + 1.5; // 尺寸在 1.5px 到 4px 之间
+                this.speed = (Math.random() * 0.002 + 0.0008); 
+                this.colorBase = colors[Math.floor(Math.random() * colors.length)];
+                this.brightness = Math.random() * 0.6 + 0.3;
             }
             update() {
                 this.angle += this.speed;
@@ -163,8 +168,9 @@
                 const lastY = canvas.height / 2 + Math.sin(this.angle - this.speed) * this.dist;
 
                 ctx.beginPath();
-                ctx.strokeStyle = `rgba(255, 77, 0, ${this.brightness})`;
-                ctx.lineWidth = 1;
+                ctx.strokeStyle = this.colorBase + this.brightness + ')';
+                ctx.lineWidth = this.size; // 线条粗细随尺寸变化
+                ctx.lineCap = 'round';
                 ctx.moveTo(lastX, lastY);
                 ctx.lineTo(x, y);
                 ctx.stroke();
@@ -179,9 +185,10 @@
         }
 
         function animate() {
-            // 通过不完全清空画笔实现长拖尾星轨
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            // 背景拖尾深度，数值越小，星轨拖尾越长
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
             stars.forEach(s => {
                 s.update();
                 s.draw();
@@ -189,11 +196,10 @@
             requestAnimationFrame(animate);
         }
 
-        // --- 交互逻辑 ---
         function startProtocol() {
             const splash = document.getElementById('splash-screen');
             splash.style.opacity = '0';
-            splash.style.transform = 'scale(1.1)';
+            splash.style.transform = 'translateY(-20px)';
             
             setTimeout(() => {
                 splash.style.display = 'none';
@@ -207,16 +213,15 @@
         function updateContent(type, el) {
             const header = document.getElementById('ui-header');
             const body = document.getElementById('ui-body');
-            
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
 
             if(type === 'home') {
-                header.innerText = "系统就绪";
-                body.innerText = "欢迎来到终末地协议终端。正在实时监测塔卫二的星轨频率。当前连接状态稳定。";
+                header.innerText = "彩色星轨监测";
+                body.innerText = "终端已切换至广谱观察模式。正在捕捉不同频率的星体轨迹。彩色粒子代表不同的能源读数。";
             } else {
-                header.innerText = "情报解密";
-                body.innerText = "正在读取 MC 服务器核心数据... 塔卫二地表环境监测中。当前在线协议员：12/50。";
+                header.innerText = "能源读数异常";
+                body.innerText = "警告：塔卫二核心区域检测到高能粒子爆发。橙色轨道占比上升 40%。请所有干员注意辐射防护。";
             }
         }
 
