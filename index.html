@@ -3,128 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Endfield | 多色星轨终端</title>
+    <title>Endfield | 极效协议终端</title>
     <style>
         :root {
             --accent: #ff4d00;
+            --accent-glow: rgba(255, 77, 0, 0.5);
             --bg: #000000;
             --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.15);
         }
 
         * { box-sizing: border-box; }
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             background: var(--bg); overflow: hidden;
-            color: #fff; font-family: "Segoe UI", "PingFang SC", sans-serif;
+            color: #fff; font-family: "Orbitron", "Segoe UI", sans-serif;
         }
 
-        /* 装饰层 */
-        .overlay-deco {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.8) 100%);
-            pointer-events: none; z-index: 5;
+        /* --- 华丽入场扫描线 --- */
+        #warp-line {
+            position: fixed; top: 50%; left: 0; width: 100%; height: 2px;
+            background: #fff; box-shadow: 0 0 20px #fff, 0 0 40px var(--accent);
+            z-index: 1000; transform: scaleX(0); opacity: 0;
+            transition: transform 0.5s ease-in, opacity 0.2s;
         }
 
-        /* 启动屏 */
+        /* --- 启动屏 --- */
         #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 100; background: #000;
-            transition: all 1s cubic-bezier(0.7, 0, 0.3, 1);
+            position: fixed; inset: 0; display: flex; justify-content: center; align-items: center;
+            z-index: 100; background: #000; transition: all 0.8s cubic-bezier(0.7, 0, 0.3, 1);
         }
 
         .auth-card {
-            padding: 50px 80px; border: 1px solid var(--glass-border);
-            background: var(--glass); backdrop-filter: blur(10px);
-            text-align: center; clip-path: polygon(0 0, 92% 0, 100% 15%, 100% 100%, 8% 100%, 0 85%);
+            padding: 60px; border: 1px solid var(--glass-border);
+            background: var(--glass); backdrop-filter: blur(15px);
+            text-align: center; position: relative;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
         }
 
-        .auth-card h1 { font-size: 3rem; letter-spacing: 12px; margin: 0; font-weight: 900; }
-        .auth-card p { color: var(--accent); font-size: 0.8rem; letter-spacing: 4px; margin: 15px 0 40px; }
+        .auth-card h1 { font-size: 4rem; letter-spacing: 20px; margin: 0; font-weight: 900; text-shadow: 0 0 15px var(--accent-glow); }
+        .auth-card p { color: var(--accent); font-size: 0.9rem; letter-spacing: 6px; margin: 20px 0 50px; opacity: 0.8; }
 
         .btn-launch {
             background: transparent; border: 1px solid var(--accent);
-            color: var(--accent); padding: 15px 45px; cursor: pointer;
-            letter-spacing: 5px; transition: 0.3s; font-weight: bold;
+            color: var(--accent); padding: 18px 60px; cursor: pointer;
+            letter-spacing: 8px; transition: 0.4s; font-weight: bold;
+            position: relative; overflow: hidden;
         }
 
         .btn-launch:hover {
-            background: var(--accent); color: #fff; box-shadow: 0 0 30px var(--accent);
+            background: var(--accent); color: #fff; box-shadow: 0 0 40px var(--accent);
+            transform: translateY(-2px);
         }
 
-        /* 背景画布 */
-        #star-canvas {
-            position: fixed; top: 0; left: 0; z-index: 1;
-            opacity: 0; transition: opacity 2.5s ease;
-        }
+        /* --- 星轨背景 --- */
+        #star-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0; transition: opacity 2s; }
 
-        /* 主UI层 */
+        /* --- 主UI面板 --- */
         #main-ui {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 10; display: none; padding: 60px;
-            grid-template-columns: 420px 1fr; align-items: center;
-            animation: uiFadeIn 1.5s ease forwards;
+            position: fixed; inset: 0; z-index: 10; display: none;
+            padding: 80px; grid-template-columns: 450px 1fr; align-items: center;
         }
 
         .side-panel {
-            background: var(--glass); border-left: 3px solid var(--accent);
-            padding: 40px; backdrop-filter: blur(15px);
+            background: var(--glass); border-left: 5px solid var(--accent);
+            padding: 40px; backdrop-filter: blur(20px);
             border-top: 1px solid var(--glass-border);
-            border-bottom: 1px solid var(--glass-border);
+            border-right: 1px solid var(--glass-border);
+            transform: perspective(1000px) rotateY(15deg);
+            opacity: 0; transition: 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
         }
 
-        .panel-tag { color: var(--accent); font-size: 0.7rem; margin-bottom: 10px; }
-        .panel-title { font-size: 2rem; margin: 0 0 20px 0; font-weight: 800; }
-        .panel-body { color: #ccc; line-height: 1.8; font-size: 0.95rem; margin-bottom: 30px; }
+        .side-panel.active { opacity: 1; transform: perspective(1000px) rotateY(0deg); }
 
-        .nav-footer {
-            position: absolute; bottom: 60px; left: 60px; display: flex; gap: 20px;
+        .panel-tag { color: var(--accent); font-size: 0.75rem; margin-bottom: 15px; font-family: monospace; }
+        .panel-title { font-size: 2.4rem; margin: 0 0 25px 0; font-weight: 800; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .panel-body { color: #ddd; line-height: 2; font-size: 1rem; margin-bottom: 40px; }
+
+        /* 装饰小动画 */
+        .glitch-bar {
+            width: 100%; height: 3px; background: linear-gradient(90deg, var(--accent), transparent);
+            position: relative; overflow: hidden;
         }
+        .glitch-bar::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: white; animation: scan-anim 2s infinite;
+        }
+        @keyframes scan-anim { 100% { left: 100%; } }
 
+        .nav-footer { position: absolute; bottom: 80px; left: 80px; display: flex; gap: 25px; }
         .nav-btn {
-            padding: 10px 25px; border: 1px solid var(--glass-border);
-            background: rgba(0,0,0,0.5); cursor: pointer;
-            font-size: 0.75rem; letter-spacing: 2px; transition: 0.3s;
+            padding: 12px 35px; border: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.6); cursor: pointer;
+            font-size: 0.8rem; letter-spacing: 3px; transition: 0.3s;
         }
+        .nav-btn:hover, .nav-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(255,77,0,0.1); }
 
-        .nav-btn:hover, .nav-btn.active { border-color: var(--accent); color: var(--accent); }
-
-        @keyframes uiFadeIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
     </style>
 </head>
 <body>
 
-    <div class="overlay-deco"></div>
+    <div id="warp-line"></div>
 
     <div id="splash-screen">
         <div class="auth-card">
             <h1>ENDFIELD</h1>
-            <p>VOYAGE TO THE STARS</p>
-            <button class="btn-launch" onclick="startProtocol()">激活同步协议</button>
+            <p>NEURAL LINK ESTABLISHED</p>
+            <button class="btn-launch" onclick="triggerWarp()">INITIALIZE SYSTEM</button>
         </div>
     </div>
 
     <canvas id="star-canvas"></canvas>
 
     <div id="main-ui">
-        <div class="side-panel">
-            <div class="panel-tag">// MULTI_COLOR_TRAILS_ACTIVE</div>
-            <h2 id="ui-header" class="panel-title">彩色星轨监测</h2>
+        <div class="side-panel" id="side-panel">
+            <div class="panel-tag">// PROTOCOL_03_ACTIVE</div>
+            <h2 id="ui-header" class="panel-title">终端已接入</h2>
             <div id="ui-body" class="panel-body">
-                终端已切换至广谱观察模式。正在捕捉不同频率的星体轨迹。
-                彩色粒子代表不同的能源读数。
+                欢迎，操作员。正在同步塔卫二（Talos-II）高轨道卫星数据。
+                全频谱彩色星轨监测已开启。
             </div>
-            <div style="width: 100%; height: 2px; background: linear-gradient(90deg, var(--accent), transparent);"></div>
+            <div class="glitch-bar"></div>
         </div>
 
         <div class="nav-footer">
-            <div class="nav-btn active" onclick="updateContent('home', this)">实时概览</div>
+            <div class="nav-btn active" onclick="updateContent('home', this)">实时同步</div>
             <div class="nav-btn" onclick="updateContent('info', this)">能源分析</div>
-            <div class="nav-btn" onclick="location.reload()">断开连接</div>
+            <div class="nav-btn" onclick="location.reload()">强制脱离</div>
         </div>
     </div>
 
@@ -132,44 +138,42 @@
         const canvas = document.getElementById('star-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-        const starCount = 400; // 稍微减少数量以适配更大的尺寸，保持画面清爽
+        let speedMultiplier = 1;
+        const starCount = 400;
         
-        // 定义配色方案
         const colors = [
             'rgba(255, 77, 0, ',   // 终末地橙
-            'rgba(0, 200, 255, ',  // 极光蓝
-            'rgba(180, 100, 255, ', // 虚空紫
-            'rgba(255, 255, 255, '  // 纯净白
+            'rgba(0, 200, 255, ',  // 冰蓝
+            'rgba(200, 100, 255, ', // 灵能紫
+            'rgba(255, 255, 255, '  // 纯白
         ];
 
         class Star {
-            constructor() {
-                this.reset();
-            }
+            constructor() { this.reset(); }
             reset() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.dist = Math.sqrt(Math.pow(this.x - canvas.width/2, 2) + Math.pow(this.y - canvas.height/2, 2));
                 this.angle = Math.atan2(this.y - canvas.height/2, this.x - canvas.width/2);
-                
-                // --- 修改点：星星变大，速度随机性增加 ---
-                this.size = Math.random() * 2.5 + 1.5; // 尺寸在 1.5px 到 4px 之间
-                this.speed = (Math.random() * 0.002 + 0.0008); 
+                this.size = Math.random() * 3 + 2;
+                this.speed = (Math.random() * 0.002 + 0.0005); 
                 this.colorBase = colors[Math.floor(Math.random() * colors.length)];
-                this.brightness = Math.random() * 0.6 + 0.3;
+                this.brightness = Math.random() * 0.6 + 0.4;
             }
             update() {
-                this.angle += this.speed;
+                this.angle += this.speed * speedMultiplier;
             }
             draw() {
-                const x = canvas.width / 2 + Math.cos(this.angle) * this.dist;
-                const y = canvas.height / 2 + Math.sin(this.angle) * this.dist;
-                const lastX = canvas.width / 2 + Math.cos(this.angle - this.speed) * this.dist;
-                const lastY = canvas.height / 2 + Math.sin(this.angle - this.speed) * this.dist;
+                const x = canvas.width/2 + Math.cos(this.angle) * this.dist;
+                const y = canvas.height/2 + Math.sin(this.angle) * this.dist;
+                // 增加尾迹拉伸感
+                const trailAngle = this.angle - (this.speed * 5 * speedMultiplier);
+                const lastX = canvas.width/2 + Math.cos(trailAngle) * this.dist;
+                const lastY = canvas.height/2 + Math.sin(trailAngle) * this.dist;
 
                 ctx.beginPath();
                 ctx.strokeStyle = this.colorBase + this.brightness + ')';
-                ctx.lineWidth = this.size; // 线条粗细随尺寸变化
+                ctx.lineWidth = this.size;
                 ctx.lineCap = 'round';
                 ctx.moveTo(lastX, lastY);
                 ctx.lineTo(x, y);
@@ -185,29 +189,45 @@
         }
 
         function animate() {
-            // 背景拖尾深度，数值越小，星轨拖尾越长
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.06)';
+            ctx.fillStyle = `rgba(0, 0, 0, ${speedMultiplier > 5 ? 0.15 : 0.06})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            stars.forEach(s => {
-                s.update();
-                s.draw();
-            });
+            stars.forEach(s => { s.update(); s.draw(); });
             requestAnimationFrame(animate);
         }
 
-        function startProtocol() {
+        function triggerWarp() {
+            const warpLine = document.getElementById('warp-line');
             const splash = document.getElementById('splash-screen');
-            splash.style.opacity = '0';
-            splash.style.transform = 'translateY(-20px)';
+            
+            // 1. 扫描线激活
+            warpLine.style.opacity = '1';
+            warpLine.style.transform = 'scaleX(1)';
             
             setTimeout(() => {
-                splash.style.display = 'none';
+                // 2. 启动屏炸开渐隐
+                splash.style.opacity = '0';
+                splash.style.transform = 'scale(1.5)';
+                
+                // 3. 进入主界面准备
                 document.getElementById('star-canvas').style.opacity = '1';
                 document.getElementById('main-ui').style.display = 'grid';
                 initStars();
                 animate();
-            }, 1000);
+
+                // 4. 加速特效 (Warp Speed)
+                speedMultiplier = 20;
+                let decelerate = setInterval(() => {
+                    speedMultiplier *= 0.85;
+                    if(speedMultiplier <= 1.2) {
+                        speedMultiplier = 1;
+                        clearInterval(decelerate);
+                        // 5. UI 面板划入
+                        document.getElementById('side-panel').classList.add('active');
+                    }
+                }, 50);
+
+                setTimeout(() => { warpLine.style.opacity = '0'; }, 300);
+            }, 600);
         }
 
         function updateContent(type, el) {
@@ -217,17 +237,15 @@
             el.classList.add('active');
 
             if(type === 'home') {
-                header.innerText = "彩色星轨监测";
-                body.innerText = "终端已切换至广谱观察模式。正在捕捉不同频率的星体轨迹。彩色粒子代表不同的能源读数。";
+                header.innerText = "终端已接入";
+                body.innerText = "欢迎，操作员。正在同步塔卫二（Talos-II）高轨道卫星数据。全频谱彩色星轨监测已开启。";
             } else {
-                header.innerText = "能源读数异常";
-                body.innerText = "警告：塔卫二核心区域检测到高能粒子爆发。橙色轨道占比上升 40%。请所有干员注意辐射防护。";
+                header.innerText = "高能读数警告";
+                body.innerText = "检测到严重的侵蚀粒子（Erosion）浓度波动。星轨呈现紫色偏振。建议立即强化护盾协议。";
             }
         }
 
-        window.addEventListener('resize', () => {
-            if(document.getElementById('main-ui').style.display === 'grid') initStars();
-        });
+        window.addEventListener('resize', initStars);
     </script>
 </body>
 </html>
