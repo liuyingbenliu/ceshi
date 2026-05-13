@@ -8,80 +8,44 @@
             --ba-sky: #cce7f5;
             --ba-blue: #00aeef;
             --ba-halo: rgba(163, 228, 255, 0.8);
+            --ba-btn: rgba(255, 255, 255, 0.4);
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
             overflow: hidden;
-            /* 还原图中的明亮天空色 */
             background: linear-gradient(to bottom, #b9d8eb 0%, #eef6fb 100%);
             font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
 
-        /* 背景装饰：远处的圣塔光柱 */
+        /* 圣塔光柱装饰 */
         .sanctum-tower {
-            position: absolute;
-            bottom: 0;
-            left: 15%;
-            width: 60px;
-            height: 80vh;
+            position: absolute; bottom: 0; left: 15%; width: 60px; height: 80vh;
             background: linear-gradient(to top, rgba(255,255,255,0.8), transparent);
-            filter: blur(5px);
-            z-index: 1;
+            filter: blur(5px); z-index: 1;
         }
         .sanctum-tower::after {
-            content: '';
-            position: absolute;
-            top: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 200vh;
-            background: white;
-            box-shadow: 0 0 20px white;
-        }
-
-        /* 背景装饰：图中天空的圆环波纹 */
-        .sky-ripple {
-            position: absolute;
-            top: 10%;
-            left: 10%;
-            width: 400px;
-            height: 200px;
-            border: 1px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            transform: rotateX(75deg);
-            z-index: 1;
+            content: ''; position: absolute; top: -100px; left: 50%;
+            transform: translateX(-50%); width: 2px; height: 200vh;
+            background: white; box-shadow: 0 0 20px white;
         }
 
         /* 倒计时主容器 */
         .display-container {
-            position: relative;
-            z-index: 10;
+            position: relative; z-index: 10;
             margin-top: 18vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        /* 重点：角色风格光环 */
+        /* 角色风格光环 */
         .halo {
-            position: relative;
-            width: 280px;
-            height: 60px;
-            margin-bottom: -10px; /* 让光环稍微靠近文字 */
-            perspective: 500px;
+            position: relative; width: 280px; height: 60px;
+            margin-bottom: -10px; perspective: 500px;
         }
-
         .halo-circle {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid var(--ba-halo);
-            border-radius: 50%;
+            position: absolute; width: 100%; height: 100%;
+            border: 3px solid var(--ba-halo); border-radius: 50%;
             transform: rotateX(75deg);
             box-shadow: 0 0 15px var(--ba-halo), inset 0 0 10px var(--ba-halo);
             animation: haloPulse 3s ease-in-out infinite;
@@ -92,65 +56,85 @@
             50% { opacity: 1; transform: rotateX(75deg) scale(1.05); }
         }
 
-        /* 倒计时文字：干净、现代 */
-        .timer-text {
-            text-align: center;
-            color: #4a5d6a; /* 深灰蓝色，更有质感 */
-            font-weight: 200;
-        }
-
         #timer {
-            font-size: 5.5rem;
-            font-weight: 100;
-            letter-spacing: -2px;
-            margin: 0;
-            /* 模拟图中的清透感 */
+            font-size: 5.5rem; font-weight: 100; color: #4a5d6a;
+            letter-spacing: -2px; margin: 0;
             background: linear-gradient(to bottom, #4a5d6a, #8ba3b3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .unit {
-            font-size: 1rem;
-            margin-right: 15px;
-            color: var(--ba-blue);
-            font-weight: bold;
-        }
+        .unit { font-size: 1rem; margin-right: 15px; color: var(--ba-blue); font-weight: bold; }
 
-        /* 流星效果 */
-        .meteor {
+        /* --- 底部导航栏 --- */
+        .bottom-bar {
             position: absolute;
-            width: 3px;
-            height: 3px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 10px white, 0 0 20px white;
-            animation: meteorFall linear forwards;
-            z-index: 2;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 400px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        @keyframes meteorFall {
-            0% { transform: translate(0, 0) scale(1); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translate(-300px, 600px) scale(0); opacity: 0; }
+        .ai-button {
+            background: var(--ba-blue);
+            color: white;
+            border: none;
+            padding: 10px 40px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 174, 239, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
+        /* 按钮点击反馈 */
+        .ai-button:active {
+            transform: scale(0.95);
+            filter: brightness(1.1);
+        }
+
+        .ai-button::before {
+            content: '●';
+            font-size: 0.8rem;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* 流星效果略... (保持之前的逻辑) */
+        .meteor { position: absolute; width: 3px; height: 3px; background: white; border-radius: 50%; box-shadow: 0 0 10px white; animation: meteorFall linear forwards; z-index: 2; }
+        @keyframes meteorFall { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate(-300px, 600px); opacity: 0; } }
     </style>
 </head>
 <body>
 
     <div class="sanctum-tower"></div>
-    <div class="sky-ripple" style="width: 600px; left: 5%;"></div>
-    <div class="sky-ripple" style="width: 400px; top: 15%;"></div>
 
     <div class="display-container">
-        <div class="halo">
-            <div class="halo-circle"></div>
-        </div>
-        
-        <div class="timer-text">
-            <div style="letter-spacing: 5px; opacity: 0.7; font-size: 0.9rem;">REMAINING TIME</div>
-            <div id="timer">00<span class="unit">d</span>00<span class="unit">h</span>00<span class="unit">m</span>00<span class="unit">s</span></div>
-        </div>
+        <div class="halo"><div class="halo-circle"></div></div>
+        <div id="timer">00<span class="unit">d</span>00<span class="unit">h</span>00<span class="unit">m</span>00<span class="unit">s</span></div>
+    </div>
+
+    <div class="bottom-bar">
+        <button class="ai-button" onclick="openDeepSeek()">Ai</button>
     </div>
 
     <script>
@@ -158,30 +142,35 @@
             const target = new Date(2026, 5, 1); 
             const now = new Date();
             const diff = target - now;
-
-            if (diff <= 0) {
-                document.getElementById('timer').innerText = "00:00:00:00";
-                return;
-            }
-
             const d = Math.floor(diff / 86400000);
             const h = Math.floor((diff / 3600000) % 24);
             const m = Math.floor((diff / 60000) % 60);
             const s = Math.floor((diff / 1000) % 60);
-
             const pad = (n) => n.toString().padStart(2, '0');
+            document.getElementById('timer').innerHTML = `${pad(d)}<span class="unit">d</span>${pad(h)}<span class="unit">h</span>${pad(m)}<span class="unit">m</span>${pad(s)}<span class="unit">s</span>`;
+        }
 
-            document.getElementById('timer').innerHTML = 
-                `${pad(d)}<span class="unit">d</span>` +
-                `${pad(h)}<span class="unit">h</span>` +
-                `${pad(m)}<span class="unit">m</span>` +
-                `${pad(s)}<span class="unit">s</span>`;
+        // 打开 DeepSeek 软件的函数
+        function openDeepSeek() {
+            const packageName = "com.deepseek.chat";
+            
+            // 尝试通过 URI Scheme 或 Android Intent 启动
+            // 注意：在普通浏览器中直接启动 App 受限，但在封装好的 App 容器或某些特定环境下有效
+            const intentUri = `intent://#Intent;package=${packageName};scheme=deepseek;end`;
+            
+            // 尝试跳转
+            window.location.href = intentUri;
+
+            // 备选逻辑：如果 2 秒内没跳走，提示用户
+            setTimeout(() => {
+                alert("正在尝试连接夏莱终端 (DeepSeek)... \n请确保手机已安装 DeepSeek App。");
+            }, 2000);
         }
 
         function spawnMeteor() {
             const m = document.createElement('div');
             m.className = 'meteor';
-            m.style.left = (Math.random() * 100 + 20) + 'vw';
+            m.style.left = (Math.random() * 100) + 'vw';
             m.style.top = '-10px';
             m.style.animationDuration = (Math.random() * 2 + 2) + 's';
             document.body.appendChild(m);
@@ -189,7 +178,7 @@
         }
 
         setInterval(update, 1000);
-        setInterval(spawnMeteor, 2000);
+        setInterval(spawnMeteor, 2500);
         update();
     </script>
 </body>
