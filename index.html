@@ -2,11 +2,12 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Kivotos Countdown</title>
+    <title>Blue Archive - Kivotos 06.01</title>
     <style>
         :root {
+            --ba-sky: #cce7f5;
             --ba-blue: #00aeef;
-            --ba-light: #ffffff;
+            --ba-halo: rgba(163, 228, 255, 0.8);
         }
 
         body, html {
@@ -14,138 +15,152 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #002d4a;
-            /* 更有层次感的深蓝色背景 */
-            background: radial-gradient(circle at center, #005a8d 0%, #001a2c 100%);
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            /* 还原图中的明亮天空色 */
+            background: linear-gradient(to bottom, #b9d8eb 0%, #eef6fb 100%);
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
 
-        /* 容器在中上位置 */
-        .container {
+        /* 背景装饰：远处的圣塔光柱 */
+        .sanctum-tower {
+            position: absolute;
+            bottom: 0;
+            left: 15%;
+            width: 60px;
+            height: 80vh;
+            background: linear-gradient(to top, rgba(255,255,255,0.8), transparent);
+            filter: blur(5px);
+            z-index: 1;
+        }
+        .sanctum-tower::after {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 200vh;
+            background: white;
+            box-shadow: 0 0 20px white;
+        }
+
+        /* 背景装饰：图中天空的圆环波纹 */
+        .sky-ripple {
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 400px;
+            height: 200px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            transform: rotateX(75deg);
+            z-index: 1;
+        }
+
+        /* 倒计时主容器 */
+        .display-container {
             position: relative;
-            margin-top: 20vh;
-            width: 600px;
-            height: 400px;
+            z-index: 10;
+            margin-top: 18vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
         }
 
-        /* --- 核心光环组 --- */
-        .halo-system {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            z-index: 1;
-            perspective: 800px; /* 3D 视距 */
-        }
-
-        .ring {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 50%;
-            border: 2px solid var(--ba-blue);
-            box-shadow: 0 0 15px rgba(0, 174, 239, 0.5), inset 0 0 15px rgba(0, 174, 239, 0.5);
-            transform-style: preserve-3d;
-        }
-
-        /* 外环：虚线快速旋转 */
-        .ring-outer {
-            border: 2px dashed rgba(255, 255, 255, 0.4);
-            animation: ringRotate 10s linear infinite;
-        }
-
-        /* 内环：实体慢速旋转 */
-        .ring-inner {
-            width: 80%; height: 80%;
-            top: 10%; left: 10%;
-            border: 3px solid var(--ba-blue);
-            opacity: 0.6;
-            animation: ringRotate 20s linear infinite reverse;
-        }
-
-        @keyframes ringRotate {
-            /* 这里的 rotateX 从 60 减小到 45，让光环更清晰可见 */
-            0% { transform: rotateX(45deg) rotateZ(0deg); }
-            100% { transform: rotateX(45deg) rotateZ(360deg); }
-        }
-
-        /* --- 倒计时文字 --- */
-        .timer-content {
+        /* 重点：角色风格光环 */
+        .halo {
             position: relative;
-            z-index: 10;
+            width: 280px;
+            height: 60px;
+            margin-bottom: -10px; /* 让光环稍微靠近文字 */
+            perspective: 500px;
+        }
+
+        .halo-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid var(--ba-halo);
+            border-radius: 50%;
+            transform: rotateX(75deg);
+            box-shadow: 0 0 15px var(--ba-halo), inset 0 0 10px var(--ba-halo);
+            animation: haloPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes haloPulse {
+            0%, 100% { opacity: 0.5; transform: rotateX(75deg) scale(1); }
+            50% { opacity: 1; transform: rotateX(75deg) scale(1.05); }
+        }
+
+        /* 倒计时文字：干净、现代 */
+        .timer-text {
             text-align: center;
-            color: white;
-            text-shadow: 0 0 20px rgba(0, 174, 239, 1);
+            color: #4a5d6a; /* 深灰蓝色，更有质感 */
+            font-weight: 200;
         }
 
-        .mission-text {
-            font-size: 14px;
-            letter-spacing: 6px;
-            color: var(--ba-blue);
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        #countdown {
-            font-size: 4.5rem;
-            font-weight: 900;
-            font-family: 'Courier New', Courier, monospace;
+        #timer {
+            font-size: 5.5rem;
+            font-weight: 100;
+            letter-spacing: -2px;
+            margin: 0;
+            /* 模拟图中的清透感 */
+            background: linear-gradient(to bottom, #4a5d6a, #8ba3b3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .unit {
             font-size: 1rem;
-            margin: 0 5px;
-            font-weight: normal;
-            vertical-align: middle;
+            margin-right: 15px;
+            color: var(--ba-blue);
+            font-weight: bold;
         }
 
-        /* --- 流星轨迹 --- */
+        /* 流星效果 */
         .meteor {
             position: absolute;
-            width: 2px;
-            height: 60px;
-            background: linear-gradient(to bottom, transparent, #fff);
-            opacity: 0.8;
-            animation: fall linear forwards;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white, 0 0 20px white;
+            animation: meteorFall linear forwards;
+            z-index: 2;
         }
 
-        @keyframes fall {
-            0% { transform: translate(0, 0) rotate(-35deg); opacity: 0; }
+        @keyframes meteorFall {
+            0% { transform: translate(0, 0) scale(1); opacity: 0; }
             10% { opacity: 1; }
-            100% { transform: translate(-400px, 800px) rotate(-35deg); opacity: 0; }
+            100% { transform: translate(-300px, 600px) scale(0); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="halo-system">
-            <div class="ring ring-outer"></div>
-            <div class="ring ring-inner"></div>
-        </div>
+    <div class="sanctum-tower"></div>
+    <div class="sky-ripple" style="width: 600px; left: 5%;"></div>
+    <div class="sky-ripple" style="width: 400px; top: 15%;"></div>
 
-        <div class="timer-content">
-            <div class="mission-text">SCHALE STATUS: COUNTING</div>
-            <div id="countdown">00<span class="unit">d</span> 00<span class="unit">h</span> 00<span class="unit">m</span> 00<span class="unit">s</span></div>
+    <div class="display-container">
+        <div class="halo">
+            <div class="halo-circle"></div>
+        </div>
+        
+        <div class="timer-text">
+            <div style="letter-spacing: 5px; opacity: 0.7; font-size: 0.9rem;">REMAINING TIME</div>
+            <div id="timer">00<span class="unit">d</span>00<span class="unit">h</span>00<span class="unit">m</span>00<span class="unit">s</span></div>
         </div>
     </div>
 
     <script>
         function update() {
-            const target = new Date(2026, 5, 1); // 6月1日
+            const target = new Date(2026, 5, 1); 
             const now = new Date();
             const diff = target - now;
 
             if (diff <= 0) {
-                document.getElementById('countdown').innerText = "00:00:00:00";
+                document.getElementById('timer').innerText = "00:00:00:00";
                 return;
             }
 
@@ -154,23 +169,27 @@
             const m = Math.floor((diff / 60000) % 60);
             const s = Math.floor((diff / 1000) % 60);
 
-            const f = (n) => n.toString().padStart(2, '0');
-            document.getElementById('countdown').innerHTML = 
-                `${f(d)}<span class="unit">d</span> ${f(h)}<span class="unit">h</span> ${f(m)}<span class="unit">m</span> ${f(s)}<span class="unit">s</span>`;
+            const pad = (n) => n.toString().padStart(2, '0');
+
+            document.getElementById('timer').innerHTML = 
+                `${pad(d)}<span class="unit">d</span>` +
+                `${pad(h)}<span class="unit">h</span>` +
+                `${pad(m)}<span class="unit">m</span>` +
+                `${pad(s)}<span class="unit">s</span>`;
         }
 
-        function createMeteor() {
+        function spawnMeteor() {
             const m = document.createElement('div');
             m.className = 'meteor';
-            m.style.left = Math.random() * 100 + 'vw';
-            m.style.top = '-50px';
-            m.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+            m.style.left = (Math.random() * 100 + 20) + 'vw';
+            m.style.top = '-10px';
+            m.style.animationDuration = (Math.random() * 2 + 2) + 's';
             document.body.appendChild(m);
-            setTimeout(() => m.remove(), 2000);
+            setTimeout(() => m.remove(), 4000);
         }
 
         setInterval(update, 1000);
-        setInterval(createMeteor, 800);
+        setInterval(spawnMeteor, 2000);
         update();
     </script>
 </body>
