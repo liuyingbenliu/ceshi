@@ -2,21 +2,18 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Blue Archive - Kivotos 06.01</title>
+    <title>Kivotos Terminal</title>
     <style>
         :root {
-            --ba-sky: #cce7f5;
             --ba-blue: #00aeef;
-            --ba-halo: rgba(163, 228, 255, 0.8);
-            --ba-btn: rgba(255, 255, 255, 0.4);
+            --ba-halo: rgba(163, 228, 255, 0.9);
         }
 
         body, html {
-            margin: 0; padding: 0;
-            width: 100%; height: 100%;
+            margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden;
             background: linear-gradient(to bottom, #b9d8eb 0%, #eef6fb 100%);
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         /* 圣塔光柱装饰 */
@@ -31,97 +28,57 @@
             background: white; box-shadow: 0 0 20px white;
         }
 
-        /* 倒计时主容器 */
+        /* 容器 */
         .display-container {
             position: relative; z-index: 10;
             margin-top: 18vh;
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* 角色风格光环 */
+        /* 呼吸光环 */
         .halo {
-            position: relative; width: 280px; height: 60px;
-            margin-bottom: -10px; perspective: 500px;
+            position: relative; width: 300px; height: 60px;
+            margin-bottom: -15px; perspective: 500px;
         }
         .halo-circle {
             position: absolute; width: 100%; height: 100%;
-            border: 3px solid var(--ba-halo); border-radius: 50%;
+            border: 4px solid var(--ba-halo); border-radius: 50%;
             transform: rotateX(75deg);
-            box-shadow: 0 0 15px var(--ba-halo), inset 0 0 10px var(--ba-halo);
+            box-shadow: 0 0 20px var(--ba-halo), inset 0 0 10px var(--ba-halo);
             animation: haloPulse 3s ease-in-out infinite;
         }
 
         @keyframes haloPulse {
-            0%, 100% { opacity: 0.5; transform: rotateX(75deg) scale(1); }
-            50% { opacity: 1; transform: rotateX(75deg) scale(1.05); }
+            0%, 100% { opacity: 0.6; transform: rotateX(75deg) scale(1); }
+            50% { opacity: 1; transform: rotateX(75deg) scale(1.08); }
         }
 
+        /* 倒计时 */
         #timer {
             font-size: 5.5rem; font-weight: 100; color: #4a5d6a;
             letter-spacing: -2px; margin: 0;
             background: linear-gradient(to bottom, #4a5d6a, #8ba3b3);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
+        .unit { font-size: 1.1rem; margin-right: 12px; color: var(--ba-blue); font-weight: bold; }
 
-        .unit { font-size: 1rem; margin-right: 15px; color: var(--ba-blue); font-weight: bold; }
-
-        /* --- 底部导航栏 --- */
+        /* 底部 Ai 按钮 */
         .bottom-bar {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 400px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 20;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: absolute; bottom: 40px; left: 50%;
+            transform: translateX(-50%); z-index: 20;
         }
-
         .ai-button {
-            background: var(--ba-blue);
-            color: white;
-            border: none;
-            padding: 10px 40px;
-            border-radius: 25px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 174, 239, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            background: var(--ba-blue); color: white; border: none;
+            padding: 12px 60px; border-radius: 30px;
+            font-size: 1.5rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 174, 239, 0.4);
+            transition: transform 0.2s;
         }
+        .ai-button:active { transform: scale(0.9); }
 
-        /* 按钮点击反馈 */
-        .ai-button:active {
-            transform: scale(0.95);
-            filter: brightness(1.1);
-        }
-
-        .ai-button::before {
-            content: '●';
-            font-size: 0.8rem;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* 流星效果略... (保持之前的逻辑) */
-        .meteor { position: absolute; width: 3px; height: 3px; background: white; border-radius: 50%; box-shadow: 0 0 10px white; animation: meteorFall linear forwards; z-index: 2; }
-        @keyframes meteorFall { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate(-300px, 600px); opacity: 0; } }
+        /* 流星 */
+        .meteor { position: absolute; width: 3px; height: 3px; background: white; border-radius: 50%; box-shadow: 0 0 10px white; animation: meteorFall linear forwards; }
+        @keyframes meteorFall { 0% { transform: translate(0, 0); opacity: 0; } 10% { opacity: 1; } 100% { transform: translate(-400px, 800px); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -138,47 +95,49 @@
     </div>
 
     <script>
+        // 倒计时逻辑
         function update() {
             const target = new Date(2026, 5, 1); 
             const now = new Date();
             const diff = target - now;
-            const d = Math.floor(diff / 86400000);
-            const h = Math.floor((diff / 3600000) % 24);
-            const m = Math.floor((diff / 60000) % 60);
-            const s = Math.floor((diff / 1000) % 60);
+            const d = Math.max(0, Math.floor(diff / 86400000));
+            const h = Math.max(0, Math.floor((diff / 3600000) % 24));
+            const m = Math.max(0, Math.floor((diff / 60000) % 60));
+            const s = Math.max(0, Math.floor((diff / 1000) % 60));
             const pad = (n) => n.toString().padStart(2, '0');
             document.getElementById('timer').innerHTML = `${pad(d)}<span class="unit">d</span>${pad(h)}<span class="unit">h</span>${pad(m)}<span class="unit">m</span>${pad(s)}<span class="unit">s</span>`;
         }
 
-        // 打开 DeepSeek 软件的函数
+        // 核心：优化后的 App 唤起
         function openDeepSeek() {
-            const packageName = "com.deepseek.chat";
+            const pkg = "com.deepseek.chat";
+            // 构造 Android Intent：直接指向应用启动入口
+            const intentUri = `intent://#Intent;package=${pkg};category=android.intent.category.LAUNCHER;end`;
             
-            // 尝试通过 URI Scheme 或 Android Intent 启动
-            // 注意：在普通浏览器中直接启动 App 受限，但在封装好的 App 容器或某些特定环境下有效
-            const intentUri = `intent://#Intent;package=${packageName};scheme=deepseek;end`;
-            
-            // 尝试跳转
+            // 尝试唤起
             window.location.href = intentUri;
 
-            // 备选逻辑：如果 2 秒内没跳走，提示用户
+            // 如果没跳走，给个优雅的反馈
             setTimeout(() => {
-                alert("正在尝试连接夏莱终端 (DeepSeek)... \n请确保手机已安装 DeepSeek App。");
+                if (!document.hidden) {
+                    console.log("If the app didn't open, it might not be installed.");
+                }
             }, 2000);
         }
 
+        // 随机流星
         function spawnMeteor() {
             const m = document.createElement('div');
             m.className = 'meteor';
-            m.style.left = (Math.random() * 100) + 'vw';
+            m.style.left = Math.random() * 100 + 'vw';
             m.style.top = '-10px';
-            m.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            m.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
             document.body.appendChild(m);
-            setTimeout(() => m.remove(), 4000);
+            setTimeout(() => m.remove(), 3000);
         }
 
         setInterval(update, 1000);
-        setInterval(spawnMeteor, 2500);
+        setInterval(spawnMeteor, 3000);
         update();
     </script>
 </body>
